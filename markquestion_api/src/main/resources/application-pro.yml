@@ -1,0 +1,47 @@
+# 生产
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+#配置日志 使用控制台输出
+mybatis-plus:
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  #配置逻辑删除  已经删除了置为1  未删除置为0
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+#配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://39.107.113.111:3306/markquestion?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: hty15336132318
+  #解决出现Failed to start bean ‘documentationPluginsBootstrapper’错误
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    view:
+      prefix: /
+      suffix: .html
+    static-path-pattern: /**
+  security:
+    user:
+      name: 1156388927
+      password: 15336132318
+  servlet:
+    # 设置文件上传大小
+    multipart:
+      enabled: true
+      max-file-size: 40GB #单个数据大小
+      file-size-threshold: 0
+      max-request-size: 40GB #总数据大小
+  #配置静态资源位置
+  web:
+    resources:
+      static-locations: file:/markquestion,classpath:/static

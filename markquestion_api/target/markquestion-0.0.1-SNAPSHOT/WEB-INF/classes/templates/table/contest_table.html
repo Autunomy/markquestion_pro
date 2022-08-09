@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>比赛日程表</title>
+    <div th:include="common/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row" th:include="common/nav :: nav">
+    </div>
+
+    <!--主体内容-->
+    <div class="row">
+        <div class="two wide column"></div>
+        <div class="twelve wide column">
+            <button id="btnAll" class="ui button">显示全部比赛</button>
+            <button id="btnNew" class="ui green button">显示未开始比赛</button>
+            <button id="btnOld" class="ui red button">显示已过期比赛</button>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>比赛</th>
+                    <th>链接地址</th>
+                    <th>是否过期</th>
+                </tr>
+                </thead>
+                <tbody id="body">
+                <tr th:each="contest : ${contests}">
+                    <td th:text="${#dates.format(contest.contestTime,'yyyy-MM-dd HH:mm:ss')}">2022-06-14</td>
+                    <td th:text="${contest.platform}">牛客比赛</td>
+                    <td ><a th:href="${contest.link}" th:text="${contest.link}"></a></td>
+                    <td th:if="${contest.isExpired == 1}">已过期</td>
+                    <td th:if="${contest.isExpired == 0}">未开始</td>
+                </tr>
+<!--                <tr>-->
+<!--                    <td>2022-06-14</td>-->
+<!--                    <td>牛客比赛</td>-->
+<!--                    <td>http://asdasd</td>-->
+<!--                    <td>已过期</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>2022-06-14</td>-->
+<!--                    <td>牛客比赛</td>-->
+<!--                    <td>http://asdasd</td>-->
+<!--                    <td>已过期</td>-->
+<!--                </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin: 20px auto;font-size: large" th:include="common/footer :: footer"></div>
+</div>
+
+<script>
+    $(function(){
+        //变色效果
+        let trEl = document.getElementsByTagName("tr");
+        for(let i=0;i<trEl.length;++i){
+            if(trEl[i].children[3].innerHTML === "已过期"){
+                trEl[i].style.backgroundColor = "palevioletred";
+            }else if(trEl[i].children[3].innerHTML === "未开始"){
+                trEl[i].style.backgroundColor = "lightgreen";
+            }
+        }
+
+        //将导航栏中的比赛日程标签选中
+        $("#contest").attr("class","item active");
+    })
+
+    //用于格式化时间的函数
+    function timeString(time){
+        let datetime = new Date();
+        datetime.setTime(time);
+        let year = datetime.getFullYear();
+        let month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+        let date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+        let hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
+        let minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+        let second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+        return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+    }
+
+    //显示全部比赛信息
+    $("#btnAll").click(function(){
+        $.ajax({
+            url:"/contest/getAllContest",
+            type:"GET",
+            success:function(args){
+                let contests = JSON.parse(args);
+                let body = $("#body");
+                body.empty();
+
+                for(let index in contests){
+                    let contest = contests[index];
+
+                    let tr = document.createElement("tr");
+
+                    let contest_time = document.createElement("td");
+                    contest_time.append(document.createTextNode(timeString(contest.contestTime)));
+                    tr.append(contest_time);
+
+                    let platform = document.createElement("td");
+                    platform.append(document.createTextNode(contest.platform));
+                    tr.append(platform);
+
+                    let link = document.createElement("td");
+                    let a = document.createElement("a");
+                    a.append(document.createTextNode(contest.link));
+                    a.setAttribute("href",contest.link);
+                    link.append(a);
+                    tr.append(link);
+
+                    let isExpired = document.createElement("td");
+                    if(contest.isExpired === 1){
+                        isExpired.append(document.createTextNode("已过期"));
+                        //变色效果
+                        tr.style.backgroundColor = "palevioletred";
+                    }else{
+                        isExpired.append(document.createTextNode("未开始"));
+                        tr.style.backgroundColor = "lightgreen";
+                    }
+                    tr.append(isExpired);
+
+                    body.append(tr);
+                }
+            },
+            error:function(){
+
+            }
+        })
+    })
+
+    //显示未开始比赛信息
+    $("#btnNew").click(function(){
+        $.ajax({
+            url:"/contest/getNotBeginContest",
+            type:"GET",
+            success:function(args){
+                let contests = JSON.parse(args);
+                let body = $("#body");
+                body.empty();
+
+                for(let index in contests){
+                    let contest = contests[index];
+
+                    let tr = document.createElement("tr");
+
+                    let contest_time = document.createElement("td");
+                    contest_time.append(document.createTextNode(timeString(contest.contestTime)));
+                    tr.append(contest_time);
+
+                    let platform = document.createElement("td");
+                    platform.append(document.createTextNode(contest.platform));
+                    tr.append(platform);
+
+                    let link = document.createElement("td");
+                    let a = document.createElement("a");
+                    a.append(document.createTextNode(contest.link));
+                    a.setAttribute("href",contest.link);
+                    link.append(a);
+                    tr.append(link);
+
+                    let isExpired = document.createElement("td");
+                    isExpired.append(document.createTextNode("未开始"));
+                    tr.style.backgroundColor = "lightgreen";
+                    tr.append(isExpired);
+
+                    body.append(tr);
+                }
+            },
+            error:function(){
+
+            }
+        })
+    })
+
+    //显示已过期比赛信息
+    $("#btnOld").click(function(){
+        $.ajax({
+            url:"/contest/getHaveBeginContest",
+            type:"GET",
+            success:function(args){
+                let contests = JSON.parse(args);
+                let body = $("#body");
+                body.empty();
+
+                for(let index in contests){
+                    let contest = contests[index];
+
+                    let tr = document.createElement("tr");
+
+                    let contest_time = document.createElement("td");
+                    contest_time.append(document.createTextNode(timeString(contest.contestTime)));
+                    tr.append(contest_time);
+
+                    let platform = document.createElement("td");
+                    platform.append(document.createTextNode(contest.platform));
+                    tr.append(platform);
+
+                    let link = document.createElement("td");
+                    let a = document.createElement("a");
+                    a.append(document.createTextNode(contest.link));
+                    a.setAttribute("href",contest.link);
+                    link.append(a);
+                    tr.append(link);
+
+                    let isExpired = document.createElement("td");
+                    isExpired.append(document.createTextNode("已过期"));
+                    tr.style.backgroundColor = "palevioletred";
+                    tr.append(isExpired);
+
+                    body.append(tr);
+                }
+            },
+            error:function(){
+
+            }
+        })
+    })
+</script>
+</body>
+</html>

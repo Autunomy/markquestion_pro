@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${search}"></title>
+    <div th:include="common/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row" th:include="common/nav :: nav">
+    </div>
+    <!--占位-->
+    <div class="four wide column"></div>
+    <!--主体内容-->
+    <div class="seven wide column">
+        <!--搜索框-->
+        <div class="ui icon input">
+            <div style="margin: auto 0px !important;"><i class="icon iconfont">&#xe6ac;</i></div>
+            <form class="ui form" th:action="@{/advice/search}" method="get">
+                <input th:value="${search}" name="search" type="text" placeholder="根据名称和标签搜索...">
+            </form>
+        </div>
+        <br>
+        <br>
+        <!--主体-->
+        <div style="border: 0px solid black;border-radius: 2px">
+            <div th:each="advice : ${advices}">
+                <img style="float: left;margin-right: 20px" th:src="${advice.adviceImg}" width="100px" height="100px">
+                <a id="adviceName" th:text="${advice.adviceName}" th:href="@{/advice/showAdvice?id=}+${advice.id}"
+                   style="text-decoration: none;color: black;font-size: x-large;display: inline-block;margin-bottom: 15px">学习通脚本</a>
+                <p th:text="${advice.adviceDescribe}" style="font-size: initial">
+                    概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）</p>
+                <p>
+                    <i class="icon iconfont">&#xe7f1;</i><span th:text="${advice.adviceAuthor}"></span>
+                    &nbsp;&nbsp;
+                    <i class="icon iconfont">&#xe746;</i><span
+                        th:text="${#dates.format(advice.createTime,'yyyy-MM-dd')}">2022-06-29</span>
+                    &nbsp;&nbsp;
+                    <i class="icon iconfont">&#xe66c;</i><span th:text="${advice.adviceTag}">软件</span>
+                    &nbsp;&nbsp;
+                    <i class="icon iconfont">&#xe7ed;</i><span th:text="${advice.adviceWatch}">123</span>
+                </p>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <!--占位-->
+    <div class="five wide column"></div>
+
+    <!--底部-->
+    <div style="margin: 20px auto;font-size: large" th:include="common/footer :: footer"></div>
+</div>
+<script>
+    $(function () {
+        $("#advice").attr("class", "item active");
+    })
+</script>
+</body>
+
+</html>

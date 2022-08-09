@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>友链页面</title>
+    <div th:include="common/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row" th:include="common/nav :: nav">
+    </div>
+
+    <div class="row">
+        <!--占位-->
+        <div class="one wide column"></div>
+        <!--主体-->
+        <div class="fourteen wide column">
+            <div class="row">
+                <div class="ui cards">
+                    <div class="card" style="margin: 20px auto !important;" th:each="friendLink : ${friendLinks}">
+                        <div class="content">
+                            <div class="header"><a th:text="${friendLink.linkName}" th:href="${friendLink.link}">百度</a></div>
+                            <div class="meta" th:text="${friendLink.tag}">搜索引擎</div>
+                            <div class="description" th:utext="${friendLink.description}">遇到不会的问题就去问度娘</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin: 20px auto;font-size: large" th:include="common/footer :: footer"></div>
+</div>
+<script>
+    //将导航栏中的友链标签选中
+    $(function(){
+        $("#friendLink").attr("class","item active");
+    })
+</script>
+</body>
+</html>

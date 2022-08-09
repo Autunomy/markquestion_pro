@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改题库信息</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav"></div>
+    <!--表单-->
+    <div style="margin: 0px auto !important;width: 500px">
+        <form method="post" th:action="@{/manage/practice/updatePracticeTag}" class="ui form" style="font-size: large">
+            <div class="field">
+                <label>题库名称</label>
+                <input th:value="${practiceTag.id}" name="id" type="hidden" value="旧题库名称"/>
+                <input th:value="${practiceTag.practiceTagName}" name="oldPracticeTagName" type="hidden" value="旧题库名称"/>
+                <input th:value="${practiceTag.practiceTagName}" name="newPracticeTagName" type="text" placeholder="题库名称"/>
+            </div>
+            <button class="ui button" type="submit">修改</button>
+            <!--修改完成之后一定要将当前题库下的所有题目的所属题库进行重命名-->
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

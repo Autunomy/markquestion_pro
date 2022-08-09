@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>题解信息管理页面</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+    <!--引入semantic-->
+<!--    <script src="/js/jquery.min.js"></script>-->
+<!--    <script src="/js/semantic.min.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/semantic.min.css">-->
+
+<!--    &lt;!&ndash;引入阿里字体图标库&ndash;&gt;-->
+<!--    <script src="/js/iconfont.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/iconfont.css">-->
+
+<!--    &lt;!&ndash;网站图标&ndash;&gt;-->
+<!--    <link rel="icon" type="image/x-icon" href="/css/favico.ico">-->
+</head>
+<body>
+<div class="ui grid">
+    <!--导航-->
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav"></div>
+
+    <!--主体-->
+    <!--占位-->
+    <div class="three wide column"></div>
+    <!--题解主体-->
+    <div class="ten wide column">
+
+        <div class="row">
+            <!--搜索框-->
+            <div class="ui icon input">
+                <div style="margin: auto 0px !important;"><i class="icon iconfont">&#xe6ac;</i></div>
+                <input id="search" type="text" placeholder="根据名称搜索...">
+            </div>
+            &nbsp;&nbsp;&nbsp;
+
+            <!--下拉菜单-->
+            题目来源：<select id="platform" class="ui dropdown">
+            <option value="all">all</option>
+            <option th:each="platform : ${platforms}" th:text="${platform.platform}">newCoder</option>
+        </select>
+            &nbsp;&nbsp;&nbsp;
+
+            标签：<select id="tag" class="ui dropdown">
+            <option value="all">all</option>
+
+            <option th:each="questionTag : ${questionTags}" th:text="${questionTag.tagName}">java</option>
+        </select>
+        <a th:href="@{/manage/question/toAddQuestion}" class="ui button">添加题解</a>
+        </div>
+        <table class="ui single line table">
+            <thead>
+            <tr>
+                <th>题号</th>
+                <th>题目名称</th>
+                <th>来源</th>
+                <th>作者</th>
+                <th>标签</th>
+                <th>阅读量</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="body">
+            <tr th:each="question : ${questions}">
+                <td th:text="${question.id}">1</td>
+                <td><a th:text="${question.questionName}" th:href="@{/manage/question/showQuestionMessage?id=}+${question.id}">题目一</a></td>
+                <td th:text="${question.questionFrom}">leetcode</td>
+                <td th:text="${question.author}">作者一</td>
+                <td><a th:text="${question.tag}" class="ui teal tag label">java</a></td>
+                <td th:text="${question.watch}">32854</td>
+                <td>
+                    <a th:href="@{/manage/question/deleteQuestion?id=}+${question.id}">删除</a>
+                    &nbsp;|&nbsp;
+                    <a th:href="@{/manage/question/toUpdateQuestion?id=}+${question.id}">修改</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(function(){
+        $("#manageQuestion").attr("class","item active");
+    })
+
+    //使用ajax实现异步刷新，执行搜索框，题目来源选择框，标签框
+    //搜索框
+    $("#search").keyup(function () {
+        let searchEl = document.getElementById("search").value;
+        // console.log(searchEl)
+        if (searchEl !== "") {
+            $("#tag").val($("#tag option:nth-child(1)").text())
+            $("#platform").val($("#platform option:nth-child(1)").text())
+
+            let url = "/question/getQuestionBySearch?search=" + searchEl;
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    //先清空之前的内容
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+
+                    console.log(questions);
+
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+
+                        document.createElement("td");
+
+                        body.append(tr);
+
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        } else if (searchEl !== null) {
+            $("#tag").val($("#tag option:nth-child(1)").text())
+            $("#platform").val($("#platform option:nth-child(1)").text())
+
+            let url = "/question/getQuestionBySearch?search=" + searchEl;
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    //先清空之前的内容
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+
+                    console.log(questions);
+
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+                        body.append(tr);
+
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        } else {
+            $("#tag").val($("#tag option:nth-child(1)").text())
+            $("#platform").val($("#platform option:nth-child(1)").text())
+
+            let url = "/question/getAllQuestion";
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+                        body.append(tr);
+
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        }
+    })
+
+    //题目来源选择框
+    $("#platform").change(function () {
+        //由于只能让其中一个选择框生效所以这里自动将标签选择框置为all
+        $("#tag").val($("#tag option:nth-child(1)").text())
+        //让搜索框的内容置空
+        $("#search").val("")
+
+        let platform = $("#platform").find("option:selected").text();
+        if (platform !== "all") {
+            let url = "/question/getQuestionByPlatform?platform=" + platform;
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    //先清空之前的内容
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+
+                        body.append(tr);
+
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        } else {
+            let url = "/question/getAllQuestion";
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+
+                        body.append(tr);
+
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        }
+
+    })
+
+    //标签选择框
+    $("#tag").change(function () {
+        //由于只能让其中一个选择框生效所以这里自动将题目来源选择框置为all
+        $("#platform").val($("#platform option:nth-child(1)").text())
+
+        //让搜索框的内容置空
+        $("#search").val("")
+
+        let tag = $("#tag").find("option:selected").text();
+        if (tag !== "all") {
+            let url = "/question/getQuestionByTag?tag=" + tag;
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+
+                        body.append(tr);
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        } else {
+            let url = "/question/getAllQuestion";
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (args) {//成功的回调函数
+                    let questions = JSON.parse(args);
+                    let body = $("#body");
+                    body.empty();
+
+                    //修改题解总数统计
+                    $("#questionNum").text(questions.length);
+                    for (let index in questions) {
+                        let question = questions[index];
+
+                        let tr = document.createElement("tr");
+
+                        let id = document.createElement("td");
+                        id.append(document.createTextNode(question.id));
+                        tr.append(id);
+
+                        let questionName = document.createElement("td");
+                        let a1 = document.createElement("a");
+                        a1.append(document.createTextNode(question.questionName));
+                        a1.setAttribute("href", "/question/showQuestion?id=" + question.id);
+                        questionName.append(a1);
+                        tr.append(questionName);
+
+                        let questionFrom = document.createElement("td");
+                        questionFrom.append(document.createTextNode(question.questionFrom));
+                        tr.append(questionFrom);
+
+                        let author = document.createElement("td");
+                        author.append(document.createTextNode(question.author));
+                        tr.append(author);
+
+                        let tag = document.createElement("td");
+                        let a2 = document.createElement("a");
+                        a2.append(document.createTextNode(question.tag))
+                        a2.setAttribute("class", "ui teal tag label");
+                        tag.append(a2);
+                        tr.append(tag);
+
+                        let watch = document.createElement("td");
+                        watch.append(document.createTextNode(question.watch));
+                        tr.append(watch);
+
+                        let ops = document.createElement("td");
+                        let deleteOps = document.createElement("a");
+                        deleteOps.setAttribute("href","/manage/question/deleteQuestion?id="+question.id);
+                        deleteOps.append(document.createTextNode("删除"));
+                        let updateOps = document.createElement("a");
+                        updateOps.setAttribute("href","/manage/question/toUpdateQuestion?id="+question.id);
+                        updateOps.append(document.createTextNode("更新"));
+                        ops.append(deleteOps);
+                        ops.append(document.createTextNode(" | "))
+                        ops.append(updateOps);
+                        tr.append(ops);
+
+
+                        body.append(tr);
+
+                    }
+                },
+                error: function () {//失败的回调函数
+
+                }
+            })
+        }
+
+    })
+</script>
+</body>
+</html>

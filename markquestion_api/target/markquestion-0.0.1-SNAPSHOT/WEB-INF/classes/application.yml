@@ -1,0 +1,3 @@
+spring:
+  profiles:
+    active: pro # 激活环境

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>题解信息详细展示页</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+    <!--引入semantic-->
+<!--    <script src="/js/jquery.min.js"></script>-->
+<!--    <script src="/js/semantic.min.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/semantic.min.css">-->
+
+<!--    &lt;!&ndash;引入阿里字体图标库&ndash;&gt;-->
+<!--    <script src="/js/iconfont.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/iconfont.css">-->
+
+<!--    &lt;!&ndash;引入marked.js&ndash;&gt;-->
+<!--    <script src="/js/marked.min.js"></script>-->
+
+<!--    &lt;!&ndash;代码高亮&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/css/default.min.css">-->
+<!--    <script src="/js/highlight.min.js"></script>-->
+<!--    <script>hljs.initHighlightingOnLoad();</script>-->
+
+<!--    &lt;!&ndash;网站图标&ndash;&gt;-->
+<!--    <link rel="icon" type="image/x-icon" href="/css/favico.ico">-->
+
+    <!--为目录设置样式-->
+    <style>
+        #menuAll {
+            width: 370px;
+            /*background: #fff;*/
+            border: 1px gray solid;
+            border-radius: 4px;
+            position: fixed;
+            right: 0;
+            /*padding: 0 6px;*/
+            margin-top: 105px;
+        }
+
+        #menu a {
+            width: 100%;
+            /*height: 30px;*/
+            /*line-height: 30px;*/
+            display: inline-block;
+            text-decoration: none;
+            color: black;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav"></div>
+
+    <!--标题-->
+    <div class="row">
+        <h1 th:text="${question.questionName}" style="margin: 0px auto">题目一</h1>
+    </div>
+    <!--占位-->
+    <div class="three wide column"></div>
+    <!--主体-->
+    <div id="questionBody" class="ten wide column">
+        <!--作者头像-->
+        <img class="ui avatar mini image" th:src="${authorMessage.headImg}">
+        <!--作者信息-->
+        <span th:text="${question.author}">Autunomy</span>
+
+        <div style="float: right">
+            <!--浏览量-->
+            <i class="icon iconfont">&#xe7ed;</i>
+            <span th:text="${question.watch}"></span>
+            <br>
+            <!--文章编辑按钮-->
+            <a style="text-decoration: none;color: black"
+               th:href="@{/manage/question/toUpdateQuestion?id=}+${question.id}">编辑</a>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <!--题解文章-->
+        <div id="solution" th:utext="${question.solution}">
+            题解正文部分
+        </div>
+    </div>
+    <!--目录部分-->
+    <div id="menuAll" class="three wide column">
+        <h2 style="color: #0e8c8c">目录</h2>
+        <div id="menu"></div>
+    </div>
+
+
+    <!--评论部分-->
+    <div class="row">
+        <!--        &lt;!&ndash;占位&ndash;&gt;-->
+        <!--        <div class="three wide column"></div>-->
+        <!--        &lt;!&ndash;评论主体&ndash;&gt;-->
+        <!--        <div class="ten wide column">-->
+        <!--            <div class="ui comments">-->
+        <!--                <h3 class="ui dividing header">评论区</h3>-->
+        <!--                <div class="comment">-->
+        <!--                    <a class="avatar">-->
+        <!--                        <img src="../images/head.JPG">-->
+        <!--                    </a>-->
+        <!--                    <div class="content">-->
+        <!--                        <a class="author">Matt</a>-->
+        <!--                        <div class="metadata">-->
+        <!--                            <span class="date">2022-06-10 15:42</span>-->
+        <!--                        </div>-->
+        <!--                        <div class="text">太赞了！ </div>-->
+        <!--                        <div class="actions">-->
+        <!--                            <a class="reply">回复</a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="comment">-->
+        <!--                    <a class="avatar">-->
+        <!--                        <img src="../images/head.JPG">-->
+        <!--                    </a>-->
+        <!--                    <div class="content">-->
+        <!--                        <a class="author">Elliot Fu</a>-->
+        <!--                        <div class="metadata">-->
+        <!--                            <span class="date">2022-06-10 15:42</span>-->
+        <!--                        </div>-->
+        <!--                        <div class="text">-->
+        <!--                            <p>這對我的研究是非常有用.謝謝!</p>-->
+        <!--                        </div>-->
+        <!--                        <div class="actions">-->
+        <!--                            <a class="reply">回复</a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                    <div class="comments">-->
+        <!--                        <div class="comment">-->
+        <!--                            <a class="avatar">-->
+        <!--                                <img src="../images/head.JPG">-->
+        <!--                            </a>-->
+        <!--                            <div class="content">-->
+        <!--                                <a class="author">Jenny Hess</a>-->
+        <!--                                <div class="metadata">-->
+        <!--                                    <span class="date">2022-06-10 15:42</span>-->
+        <!--                                </div>-->
+        <!--                                <div class="text">艾略特你永远是多么正确 :) </div>-->
+        <!--                                <div class="actions">-->
+        <!--                                    <a class="reply">回复</a>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="comment">-->
+        <!--                    <a class="avatar">-->
+        <!--                        <img src="../images/head.JPG">-->
+        <!--                    </a>-->
+        <!--                    <div class="content">-->
+        <!--                        <a class="author">Joe Henderson</a>-->
+        <!--                        <div class="metadata">-->
+        <!--                            <span class="date">2022-06-10 15:42</span>-->
+        <!--                        </div>-->
+        <!--                        <div class="text">老兄，这太棒了。非常感谢。 </div>-->
+        <!--                        <div class="actions">-->
+        <!--                            <a class="reply">回复</a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <form class="ui reply form">-->
+        <!--                    <div class="field">-->
+        <!--                        <textarea></textarea>-->
+        <!--                    </div>-->
+        <!--                    <div class="ui blue labeled submit icon button">-->
+        <!--                        <i class="icon edit"></i> 评论-->
+        <!--                    </div>-->
+        <!--                </form>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+    <div style="margin: 20px auto;font-size: large" th:include="common/footer :: footer"></div>
+</div>
+
+
+<script>
+    $(function () {
+        //加上这个代码才能进行高亮显示
+        $('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
+        });
+    })
+
+    //将h标签生成一个树形目录
+    $(document).ready(function (e) {
+        $("#solution").children().each(function (index, element) {
+            console.log(this)
+            let tagName = $(this).get(0).tagName;
+            if (tagName.substr(0, 1).toUpperCase() === "H") {
+                let contentH = $(this).html();//获取内容
+                let markid = "mark-" + tagName + "-" + index.toString();
+                $(this).attr("id", markid);//为当前h标签设置id
+                let spaceNum = "";
+                if (tagName === 'H1') {
+                    spaceNum = "";
+                } else if (tagName === 'H2') {
+                    spaceNum = "1.5";
+                } else if (tagName === 'H3') {
+                    spaceNum = "3";
+                } else if (tagName === 'H4') {
+                    spaceNum = "4.5";
+                } else if (tagName === 'H5') {
+                    spaceNum = "6";
+                } else if (tagName === 'H6') {
+                    spaceNum = "7.5";
+                }
+                spaceNum += "em";
+                $("#menu").append("<a href='#" + markid + "' style='text-indent:" + spaceNum + "'>" + contentH + "</a>");//在目标DIV中添加内容
+            }
+        });
+    });
+</script>
+</body>
+</html>

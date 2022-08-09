@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>题解信息详细展示页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="../js/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../css/MyCss.css">
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row">
+        <nav class="ui inverted attached segment">
+            <div class="ui container">
+                <div class="ui inverted secondary stackable menu">
+                    <!--stackable 可堆叠 响应移动端-->
+                    <!--导航部分-->
+                    <h2 class="ui teal header item">Autunomy</h2>
+                    <a href="../index.html" class="item" style="font-size: initial"><i class="home icon"></i>首页</a>
+                    <a href="../author/author_message.html" class="item" style="font-size: initial"><i
+                            class="address card outline icon"></i>博主信息</a>
+                    <!--<a href="#" class="item" style="font-size: initial"><i class="tags icon"></i>编写题解</a>-->
+                    <a href="../table/contest_table.html" class="item" style="font-size: initial"><i
+                            class="calendar alternate icon"></i>比赛日程表</a>
+                    <a href="../table/link_table.html" class="item" style="font-size: initial"><i class="linkify icon"></i>友链</a>
+
+                    <!--                    <a href="../manager/video/show_videos.html" class="item" style="font-size: initial"><i-->
+                    <!--                            class="video icon"></i>Video</a>-->
+                    <!--搜索框-->
+                    <div class="right item">
+                        <div class="ui icon inverted transparent input">
+                            <!--                            <input type="text" placeholder="搜索....">-->
+                            <!--                            <i class="search link icon"></i>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--标题-->
+    <div class="row">
+        <h1 style="margin: 0px auto">题目一</h1>
+    </div>
+
+    <!--占位-->
+    <div class="three wide column"></div>
+    <!--主体-->
+    <div class="ten wide column">
+        <img class="ui avatar mini image" src="../images/head.JPG">
+        <span>Autunomy</span>
+
+        <div style="float: right">
+            <i class="eye icon"></i>123
+        </div>
+        <br>
+        <br>
+        <br>
+        <div>
+            <!doctype html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+            </head>
+            <body><h1><a href="#1-单例设计模式-singleton-" name="1-单例设计模式-singleton-"></a>1.单例设计模式(Singleton)</h1>
+            <p>单例设计模式即某个类在整个系统中只能有一个实例对象被获取和使用的代码模式</p>
+            <ol>
+                <li>
+                    <p>
+                    <p>某个类只能有一个实例</p></p>
+                    <p>构造器私有化</p>
+                </li>
+                <li>
+                    <p>必须自行创建这个实例</p>
+                    <p>含有一个该类的静态变量来保存这个唯一的实例</p>
+                </li>
+                <li>
+                    <p>必须自行向整个系统提供这个实例</p>
+                    <p>对外提供获取该实例对象的方式</p>
+                    <ul>
+                        <li>直接暴露</li>
+                        <li>使用静态变量的get方法获取</li>
+                    </ul>
+                </li>
+            </ol>
+            <blockquote>
+                <p>饿汉式</p>
+            </blockquote>
+            <p>直接创建对象，不存在线程安全问题</p>
+            <ul>
+                <li>
+                    <p>
+                    <p>直接实例化饿汉式（简洁直观）</p></p>
+                    <pre><code class="java">//饿汉式 直接创建实例对象  不管程序是否需要这个对象都会创建
+public class Singleton1 {
+    //使用静态变量来保存单例对象
+    public static final Singleton1 INSTANCE = new Singleton1();
+    private Singleton1(){}//私有化构造器
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>枚举式（最简洁）</p>
+                    <pre><code class="java">//枚举类型 表示该类型对象是有限的几个 我们可以限定为一个就成了单例
+public enum Singleton2 {
+    INSTANCE
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>静态代码块饿汉式（适合复杂实例化）</p>
+                    <pre><code class="java">public class Singleton3 {
+
+    public static final Singleton3 INSTANCE;
+
+    //使用静态代码块来初始化单例对象
+    static{
+        INSTANCE = new Singleton3();
+    }
+
+    //私有化构造器
+    private Singleton3(){}
+}
+</code></pre>
+                </li>
+            </ul>
+            <blockquote>
+                <p>懒汉式</p>
+            </blockquote>
+            <p>延迟创建对象</p>
+            <ul>
+                <li>
+                    <p>
+                    <p>线程不安全（适用于单线程）</p></p>
+                    <pre><code class="java">public class Singleton4 {
+    private static Singleton4 INSTANCE;
+
+    private Singleton4 (){}
+
+    public static Singleton4 getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new Singleton4();
+        }
+        return INSTANCE;
+    }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>线程安全（适用于多线程）</p>
+                    <pre><code class="java">public class Singleton5 {
+    private static Singleton5 INSTANCE;
+
+    private Singleton5 (){}
+
+    public static Singleton5 getInstance(){
+        synchronized (Singleton5.class){
+            if(INSTANCE == null){
+                INSTANCE = new Singleton5();
+            }
+        }
+        return INSTANCE;
+    }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>静态内部类形式（适用于多线程）</p>
+                    <pre><code class="java">//在内部类被加载和初始化的时候才创建INSTANCE实例对象
+//静态内部类不会随着外部类的加载和初始化而初始化 他是要单独去加载
+//因为是在内部类加载和初始化时，创建的，因此是线程安全的
+public class Singleton6 {
+    private static Singleton6 INSTANCE;
+
+    private Singleton6(){}
+
+    private static class Inner {
+        private static final Singleton6 INSTANCE = new Singleton6();
+    }
+
+    public static Singleton6 getInstance(){
+        return Inner.INSTANCE;
+    }
+}
+</code></pre>
+                </li>
+            </ul>
+            <h1><a href="#2-类的初始化和实例化" name="2-类的初始化和实例化"></a>2.类的初始化和实例化</h1>
+            <h2><a href="#2-1-类初始化过程" name="2-1-类初始化过程"></a>2.1.类初始化过程</h2>
+            <ol>
+                <li>一个类要创建实例需要先加载初始化该类
+                    <ul>
+                        <li>main方法所在的类需要先加载和初始化</li>
+                    </ul>
+                </li>
+                <li>一个子类要初始化需要先初始化父类</li>
+                <li>一个类初始化就是执行<code>&lt;clinit&gt;()</code>方法(虚拟机自动帮助我们生成的)
+                    <ul>
+                        <li><code>&lt;clinit&gt;()</code>方法由静态变量显示赋值代码和静态代码块组成</li>
+                        <li>静态类变量显示赋值代码和静态代码块代码从上到下顺序执行</li>
+                        <li><code>&lt;clinit&gt;()</code>方法只执行一次</li>
+                    </ul>
+                </li>
+            </ol>
+            <h2><a href="#2-2-实例初始化过程" name="2-2-实例初始化过程"></a>2.2.实例初始化过程</h2>
+            <p>实例初始化就是执行<code>&lt;init&gt;()</code>方法</p>
+            <ul>
+                <li><code>&lt;init&gt;()</code>方法可能重载有多个，有几个构造器就有几个<code>&lt;init&gt;</code>方法</li>
+                <li><code>&lt;init&gt;()</code>方法由非静态实例变量显示赋值代码和非静态代码块、对应构造器代码组成</li>
+                <li>非静态实例变量显示赋值代码和非静态代码块代码从上到下顺序执行，而对应构造器的代码最后执行</li>
+                <li>每次创建实例对象，调用对应构造器，执行过的就是对应的<code>&lt;init&gt;</code>方法</li>
+                <li><code>&lt;init&gt;</code>方法的首行是super()或者super(实参列表),即对应父类的<code>&lt;init&gt;</code>方法</li>
+            </ul>
+            <pre><code class="java">public class Father {
+    private int i = test();
+    private static int j = method();
+
+    static {
+        System.out.println(&quot;(1)&quot;);
+    }
+
+    Father(){
+        System.out.println(&quot;(2)&quot;);
+    }
+
+    {
+        System.out.println(&quot;(3)&quot;);
+    }
+
+    public int test(){
+        System.out.println(&quot;(4)&quot;);
+        return 1;
+    }
+
+    public static int method(){
+        System.out.println(&quot;(5)&quot;);
+        return 1;
+    }
+}
+</code></pre>
+            <pre><code class="java">public class Son extends Father{
+    private int i = test();
+    private static int j = method();
+
+    static {
+        System.out.println(&quot;(6)&quot;);
+    }
+
+    Son(){
+        System.out.println(&quot;(7)&quot;);
+    }
+    {
+        System.out.println(&quot;(8)&quot;);
+    }
+    public int test(){
+        System.out.println(&quot;(9)&quot;);
+        return 1;
+    }
+    public static int method(){
+        System.out.println(&quot;(10)&quot;);
+        return 1;
+    }
+}
+</code></pre>
+            <p>哪些方法不可以被重写</p>
+            <ul>
+                <li>final方法</li>
+                <li>静态方法</li>
+                <li>private等子类中不可见方法</li>
+            </ul>
+            <p>对象的多态性</p>
+            <ul>
+                <li>子类如果重写了父类的方法，通过子类对象调用的一定是**子类重写过的代码**</li>
+                <li>非静态方法默认调用对象是this</li>
+                <li>this对象在构造器或者说<code>&lt;init&gt;</code>方法中就是正在创建的对象</li>
+            </ul>
+            <p><strong>重载</strong></p>
+            <p>同一个类中，方法名和返回值类型相同，参数列表不同</p>
+            <p><strong>重写</strong></p>
+            <p>父类和子类中，方法除了大括号中内容其他地方都必须相同</p>
+            <h1><a href="#3-方法参数的传递" name="3-方法参数的传递"></a>3.方法参数的传递</h1></body>
+            </html>
+        </div>
+    </div>
+
+    <!--评论部分-->
+    <div class="row">
+        <!--占位-->
+        <div class="three wide column"></div>
+        <!--评论主体-->
+        <div class="ten wide column">
+            <div class="ui comments">
+                <h3 class="ui dividing header">评论区</h3>
+                <div class="comment">
+                    <a class="avatar">
+                        <img src="../images/head.JPG">
+                    </a>
+                    <div class="content">
+                        <a class="author">Matt</a>
+                        <div class="metadata">
+                            <span class="date">2022-06-10 15:42</span>
+                        </div>
+                        <div class="text">太赞了！ </div>
+                        <div class="actions">
+                            <a class="reply">回复</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment">
+                    <a class="avatar">
+                        <img src="../images/head.JPG">
+                    </a>
+                    <div class="content">
+                        <a class="author">Elliot Fu</a>
+                        <div class="metadata">
+                            <span class="date">2022-06-10 15:42</span>
+                        </div>
+                        <div class="text">
+                            <p>這對我的研究是非常有用.謝謝!</p>
+                        </div>
+                        <div class="actions">
+                            <a class="reply">回复</a>
+                        </div>
+                    </div>
+                    <div class="comments">
+                        <div class="comment">
+                            <a class="avatar">
+                                <img src="../images/head.JPG">
+                            </a>
+                            <div class="content">
+                                <a class="author">Jenny Hess</a>
+                                <div class="metadata">
+                                    <span class="date">2022-06-10 15:42</span>
+                                </div>
+                                <div class="text">艾略特你永远是多么正确 :) </div>
+                                <div class="actions">
+                                    <a class="reply">回复</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment">
+                    <a class="avatar">
+                        <img src="../images/head.JPG">
+                    </a>
+                    <div class="content">
+                        <a class="author">Joe Henderson</a>
+                        <div class="metadata">
+                            <span class="date">2022-06-10 15:42</span>
+                        </div>
+                        <div class="text">老兄，这太棒了。非常感谢。 </div>
+                        <div class="actions">
+                            <a class="reply">回复</a>
+                        </div>
+                    </div>
+                </div>
+                <form class="ui reply form">
+                    <div class="field">
+                        <textarea></textarea>
+                    </div>
+                    <div class="ui blue labeled submit icon button">
+                        <i class="icon edit"></i> 评论
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

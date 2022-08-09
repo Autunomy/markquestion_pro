@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>博主信息管理页面</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+    <!--引入semantic-->
+<!--    <script src="/js/jquery.min.js"></script>-->
+<!--    <script src="/js/semantic.min.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/semantic.min.css">-->
+
+<!--    &lt;!&ndash;引入阿里字体图标库&ndash;&gt;-->
+<!--    <script src="/js/iconfont.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/iconfont.css">-->
+
+<!--    &lt;!&ndash;网站图标&ndash;&gt;-->
+<!--    <link rel="icon" type="image/x-icon" href="/css/favico.ico">-->
+</head>
+<body>
+<div class="ui grid">
+    <!--导航-->
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav">
+<!--        <nav class="ui inverted attached segment">-->
+<!--            <div class="ui container">-->
+<!--                <div class="ui inverted secondary stackable menu">-->
+<!--                    &lt;!&ndash;导航部分&ndash;&gt;-->
+<!--                    <h2 class="ui teal header item">后台页面</h2>-->
+<!--                    <a th:href="@{/question/index}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe867;</i>前台首页</a>-->
+<!--                    <a th:href="@{/manage/index}" class="item " style="font-size: initial"><i class="icon iconfont">&#xe867;</i>后台首页</a>-->
+<!--                    <a th:href="@{/manage/question/showQuestion}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe70d;</i>题解管理</a>-->
+<!--                    <a th:href="@{/manage/author/toManageAuthorMessage}" class="item active" style="font-size: initial"><i class="icon iconfont">&#xe7de;</i>博主信息管理</a>-->
+<!--                    <a th:href="@{/manage/contest/showContest}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe746;</i>比赛日程表管理</a>-->
+<!--                    <a th:href="@{/manage/friendLink/showFriendLink}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe6f7;</i>友链管理</a>-->
+<!--                    <a th:href="@{/manage/video/showAllVideos}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe73b;</i></i>Video</a>-->
+<!--                    <a th:href="@{/manage/access/showAccess}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe7ed;</i></i>网站访客管理</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </nav>-->
+    </div>
+
+    <!--主体-->
+    <div style="margin: 0px auto !important;width: 500px">
+        <form enctype="multipart/form-data" method="post" th:action="@{/manage/author/updateAuthorMessage}" class="ui form" style="font-size: large">
+            <input type="hidden" name="id" th:value="${authorMessage.id}">
+            <div class="field">
+                <label>用户名</label>
+                <input th:value="${authorMessage.username}" type="text" name="username" placeholder="用户名">
+            </div>
+            <div class="field">
+                <label>性别</label>
+                <input checked="checked" type="radio" name="gender" value="1">&nbsp;男 &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="gender" value="0">&nbsp;女
+            </div>
+            <div class="field">
+                <label>爱好</label>
+                <input th:value="${authorMessage.hobby}" type="text" name="hobby" placeholder="爱好" value="女">
+            </div>
+            <div class="field">
+                <label>星座</label>
+                <select name="xingzuo">
+                    <option>狮子座</option>
+                    <option>白羊座</option>
+                    <option>金牛座</option>
+                    <option>双子座</option>
+                    <option>巨蟹座</option>
+                    <option>处女座</option>
+                    <option>天秤座</option>
+                    <option>天蝎座</option>
+                    <option>射手座</option>
+                    <option>摩羯座</option>
+                    <option>水瓶座</option>
+                    <option>双鱼座</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>个人描述</label>
+                <textarea name="description" th:text="${authorMessage.description}">来自于人工只能专业但是一点都不懂人工智能的狮子男。平常喜欢写算法题，敲代码，爱好打cf和lol,想和我一起玩的dd我</textarea>
+            </div>
+            <div class="field">
+                <label>邮箱</label>
+                <input th:value="${authorMessage.email}" type="text" name="email" placeholder="邮箱" value="1156388927@qq.com">
+            </div>
+            <div class="field">
+                <label>QQ</label>
+                <input th:value="${authorMessage.qq}" type="text" name="qq" placeholder="QQ号">
+            </div>
+            <div class="field">
+                <label>微信</label>
+                <input th:value="${authorMessage.wechat}" type="text" name="wechat" placeholder="微信号">
+            </div>
+            <div class="field">
+                <label>手机号</label>
+                <input th:value="${authorMessage.phone}" type="text" name="phone" placeholder="手机号">
+            </div>
+            <input type="hidden" name="headPath" th:value="${authorMessage.headImg}">
+            <div class="field">
+                <label>头像(只支持jpg格式)</label>
+                <input type="file" name="headImg">
+            </div>
+
+            <button class="ui button" type="submit">修改</button>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<script>
+    $(function(){
+        $("#manageAuthorMessage").attr("class","item active");
+    })
+</script>
+</body>
+</html>

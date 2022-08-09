@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息修改</title>
+    <div th:include="common/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <div class="row" th:include="common/nav :: nav"></div>
+
+    <!--主体-->
+    <div style="margin: 0px auto !important;width: 1000px">
+        <form class="ui form" style="font-size: large" th:action="@{/practice/changeUserMessage}" method="post" enctype="multipart/form-data">
+            <input th:value="${practiceUser.id}" type="hidden" name="id">
+            <div class="field">
+                <label>id号</label>
+                [[${practiceUser.practiceUserId}]]
+            </div>
+            <div class="field">
+                <label>用户名</label>
+                <input th:value="${practiceUser.practiceUserUsername}" type="text" name="userName" placeholder="用户名">
+            </div>
+            <div class="field">
+                <label>邮箱</label>
+                <input th:value="${practiceUser.practiceUserEmail}" type="text" name="email" placeholder="邮箱">
+            </div>
+            <div class="field">
+                <label>头像</label>
+                <input type="file" name="userHeadImg">
+            </div>
+            <button class="ui button" type="submit">修改</button>
+        </form>
+    </div>
+    <div class="row">
+        <!--页面底部-->
+        <div style="margin: 20px auto;font-size: large" th:include="common/footer :: footer"></div>
+    </div>
+</div>
+
+<script>
+    $(function (){
+        $("#practice").attr("class", "item active");
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>友链管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="../../js/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../../css/MyCss.css">
+</head>
+<body>
+<div class="ui grid">
+    <!--导航-->
+    <div class="row">
+        <nav class="ui inverted attached segment">
+            <div class="ui container">
+                <div class="ui inverted secondary stackable menu">
+                    <!--stackable 可堆叠 响应移动端-->
+                    <!--导航部分-->
+                    <h2 class="ui teal header item">后台页面</h2>
+                    <a href="../../index.html" class="item" style="font-size: initial"><i class="home icon"></i>前台首页</a>
+                    <a href="../index.html" class="item" style="font-size: initial"><i class="home icon"></i>后台首页</a>
+                    <a href="../manage/manage_questions.html" class="item" style="font-size: initial"><i class="question icon"></i>题解管理</a>
+                    <a href="../manage/manage_author_message.html" class="item" style="font-size: initial"><i
+                            class="address card outline icon"></i>博主信息管理</a>
+                    <!--                    <a href="#" class="item" style="font-size: initial"><i class="tags icon"></i>编写题解</a>-->
+                    <a href="../manage/manage_contest_table.html" class="item" style="font-size: initial"><i
+                            class="calendar alternate icon"></i>比赛日程表管理</a>
+                    <a href="../manage/manage_link_table.html" class="item active" style="font-size: initial"><i
+                            class="linkify icon"></i>友链管理</a>
+                    <a href="../video/show_videos.html" class="item" style="font-size: initial"><i
+                            class="video icon"></i>Video</a>
+                    <!--搜索框-->
+                    <div class="right item">
+                        <div class="ui icon inverted transparent input">
+                            <!--                            <input type="text" placeholder="搜索....">-->
+                            <!--                            <i class="search link icon"></i>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--主体-->
+    <div class="row">
+        <div class="two wide column"></div>
+        <div class="twelve wide column">
+            <!--添加题解-->
+            <a href="../add/add_link.html" class="ui button">添加友链</a>
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>标签</th>
+                    <th>友链链接</th>
+                    <th>描述(可以带有html格式)</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>百度</td>
+                    <td>搜索引擎</td>
+                    <td>https://www.baidu.com</td>
+                    <td>遇到不会的问题就去问度娘</td>
+                    <td>
+                        <a href="">删除</a>
+                        &nbsp;|&nbsp;
+                        <a href="../update/update_link.html">修改</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>百度</td>
+                    <td>搜索引擎</td>
+                    <td>https://www.baidu.com</td>
+                    <td>遇到不会的问题就去问度娘</td>
+                    <td>
+                        <a href="">删除</a>
+                        &nbsp;|&nbsp;
+                        <a href="">修改</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>百度</td>
+                    <td>搜索引擎</td>
+                    <td>https://www.baidu.com</td>
+                    <td>遇到不会的问题就去问度娘</td>
+                    <td>
+                        <a href="">删除</a>
+                        &nbsp;|&nbsp;
+                        <a href="">修改</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

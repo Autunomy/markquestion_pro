@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>题解信息管理页面</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="../../js/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../../css/MyCss.css">
+</head>
+<body>
+<div class="ui grid">
+    <!--导航-->
+    <div class="row">
+        <nav class="ui inverted attached segment">
+            <div class="ui container">
+                <div class="ui inverted secondary stackable menu">
+                    <!--stackable 可堆叠 响应移动端-->
+                    <!--导航部分-->
+                    <h2 class="ui teal header item">后台页面</h2>
+                    <a href="../../index.html" class="item" style="font-size: initial"><i class="home icon"></i>前台首页</a>
+                    <a href="../index.html" class="item" style="font-size: initial"><i class="home icon"></i>后台首页</a>
+                    <a href="../manage/manage_questions.html" class="item active" style="font-size: initial"><i class="question icon"></i>题解管理</a>
+                    <a href="../manage/manage_author_message.html" class="item" style="font-size: initial"><i
+                            class="address card outline icon"></i>博主信息管理</a>
+                    <!--                    <a href="#" class="item" style="font-size: initial"><i class="tags icon"></i>编写题解</a>-->
+                    <a href="../manage/manage_contest_table.html" class="item" style="font-size: initial"><i
+                            class="calendar alternate icon"></i>比赛日程表管理</a>
+                    <a href="../manage/manage_link_table.html" class="item" style="font-size: initial"><i
+                            class="linkify icon"></i>友链管理</a>
+                    <a href="../video/show_videos.html" class="item" style="font-size: initial"><i
+                            class="video icon"></i>Video</a>
+                    <!--搜索框-->
+                    <div class="right item">
+                        <div class="ui icon inverted transparent input">
+                            <!--                            <input type="text" placeholder="搜索....">-->
+                            <!--                            <i class="search link icon"></i>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--主体-->
+    <!--占位-->
+    <div class="three wide column"></div>
+    <!--题解主体-->
+    <div class="ten wide column">
+
+        <div class="row">
+            <!--搜索框-->
+            <div class="ui icon input">
+                <input type="text" placeholder="根据名称或作者搜索...">
+                <i class="search icon"></i>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+
+            <!--下拉菜单-->
+            题目来源：<select class="ui dropdown">
+            <option value="all">all</option>
+            <option value="newCoder">newCoder</option>
+            <option value="leetcode">leetcode</option>
+            <option value="codeforces">codeforces</option>
+        </select>
+            &nbsp;&nbsp;&nbsp;
+
+            标签：<select class="ui dropdown">
+            <option value="all">all</option>
+            <option value="newCoder">java</option>
+            <option value="leetcode">html</option>
+            <option value="codeforces">python</option>
+        </select>
+        <a href="../add/add_question.html" class="ui sbutton">添加题解</a>
+        </div>
+        <table class="ui single line table">
+            <thead>
+            <tr>
+                <th>题号</th>
+                <th>题目名称</th>
+                <th>来源</th>
+                <th>作者</th>
+                <th>标签</th>
+                <th>阅读量</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td><a href="../problems/show_problems.html">题目一</a></td>
+                <td>leetcode</td>
+                <td>作者一</td>
+                <td>
+                    <a class="ui teal tag label">java</a>
+                </td>
+                <td>32854</td>
+                <td>
+                    <a href="">删除</a>
+                    &nbsp;|&nbsp;
+                    <a href="../update/update_question.html">修改</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><a href="">题目二</a></td>
+                <td>newCoder</td>
+                <td>作者二</td>
+                <td>
+                    <a class="ui teal tag label">python</a>
+                </td>
+                <td>80</td>
+                <td>
+                    <a href="">删除</a>
+                    &nbsp;|&nbsp;
+                    <a href="">修改</a>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><a href="">题目三</a></td>
+                <td>codeforces</td>
+                <td>作者三</td>
+                <td>
+                    <a class="ui teal tag label">html</a>
+                </td>
+                <td>0</td>
+                <td>
+                    <a href="">删除</a>
+                    &nbsp;|&nbsp;
+                    <a href="">修改</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

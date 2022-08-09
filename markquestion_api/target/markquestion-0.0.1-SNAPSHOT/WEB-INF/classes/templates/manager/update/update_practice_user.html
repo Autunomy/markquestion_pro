@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户修改页面</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav"></div>
+
+    <!--表单-->
+    <div style="margin: 0px auto !important;width: 500px">
+        <form  method="post" th:action="@{/manage/practice/updatePracticeUser}" class="ui form" style="font-size: large">
+            <input type="hidden" name="id" th:value="${practiceUser.id}">
+            <div class="field">
+                <label>用户id</label>
+                <input type="text" name="practiceUserId" th:value="${practiceUser.practiceUserId}">
+            </div>
+            <div class="field">
+                <label>用户名</label>
+                <input type="text" name="practiceUserUsername" th:value="${practiceUser.practiceUserUsername}">
+            </div>
+            <div class="field">
+                <label>邮箱</label>
+                <input type="text" name="practiceUserEmail" th:value="${practiceUser.practiceUserEmail}">
+            </div>
+            <button class="ui button" type="submit">修改</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

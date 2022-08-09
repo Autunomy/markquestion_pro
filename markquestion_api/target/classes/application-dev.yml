@@ -1,0 +1,69 @@
+# 生产环境
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    session:
+      timeout: 86400 # 设置的是24小时
+#    #解决配置WebMvcConfigurationSupport产生中文乱码问题
+#    encoding:
+#      charset: UTF-8
+#      enabled: true
+#      force: true
+#  tomcat:
+#    #解决配置WebMvcConfigurationSupport产生中文乱码问题
+#    uri-encoding: UTF-8
+
+#配置日志 使用控制台输出
+mybatis-plus:
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  #配置逻辑删除  已经删除了置为1  未删除置为0
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+#配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/markquestion?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  #解决出现Failed to start bean ‘documentationPluginsBootstrapper’错误
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    view:
+      prefix: /
+      suffix: .html
+    static-path-pattern: /**
+  security:
+    user:
+      name: 123
+      password: 123
+  #配置邮件
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    username: 1156388927@qq.com
+    password: ojuwpdxmjolabagg #授权码
+    properties: #安全配置
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
+  servlet:
+    # 设置文件上传大小
+    multipart:
+      enabled: true
+      max-file-size: 40GB #单个数据大小
+      file-size-threshold: 0
+      max-request-size: 40GB #总数据大小
+
+  web:
+    resources:
+      static-locations: file:E:/,classpath:/static

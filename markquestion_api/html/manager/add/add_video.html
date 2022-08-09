@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>视频添加页面</title>
+    <!--引入semantic-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="../../js/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../../css/MyCss.css">
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row">
+        <nav class="ui inverted attached segment">
+            <div class="ui container">
+                <div class="ui inverted secondary stackable menu">
+                    <!--stackable 可堆叠 响应移动端-->
+                    <!--导航部分-->
+                    <h2 class="ui teal header item">Autunomy</h2>
+                    <a href="../video/show_videos.html" class="item" style="font-size: initial"><i class="video icon"></i>首页</a>
+                    <a href="../index.html" class="item" style="font-size: initial"><i class="home icon"></i>返回</a>
+                    <a href="../manage/manage_videos.html" class="item" style="font-size: initial"><i class="globe icon"></i>管理视频</a>
+                    <a href="add_video.html" class="item active" style="font-size: initial"><i class="plus square outline icon"></i>添加视频</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--占位-->
+    <div class="four wide column"></div>
+    <!--表单提交-->
+    <div class="eight wide column">
+        <form method="post" onsubmit="return judgeTitle();" class="ui form" enctype="multipart/form-data">
+            <div class="field">
+                <label>视频标题</label>
+                <input id="title" type="text" name="title" placeholder="视频标题">
+                <span id="msg1" style="color: red"></span>
+            </div>
+            <div class="field">
+                <label>描述</label>
+                <input id="desc" type="text" name="desc" placeholder="描述">
+            </div>
+            <div class="field">
+                <label>选择文件</label>
+                <input type="file" name="video" id="video">
+                <span id="msg2" style="color: red"></span>
+            </div>
+            <button class="ui button" name="upfile">上传</button>
+        </form>
+    </div>
+
+    <!--占位-->
+    <div class="four wide column"></div>
+    <!--底部-->
+    <div class="footer">
+
+    </div>
+</div>
+
+<script>
+    //判断视频标题和视频是否为空的脚本
+    function judgeTitle(){
+        let title = document.querySelector("#title");
+        let video = document.querySelector("#video");
+        let msg1 = document.querySelector("#msg1");
+        let msg2 = document.querySelector("#msg2");
+        let path = video.value;
+
+        //判断视频标题是否为空
+        if(title.value === "" || title.value === null){
+            msg1.innerHTML = "请输入标题信息";
+            return false;
+        }else{
+            msg1.innerHTML = "";
+        }
+
+        //判断上传的文件是否为空
+        if(path === "" || path === null){
+            msg2.innerHTML = "请选择要上传的文件";
+            return false;
+        }else{
+            msg2.innerHTML = "";
+        }
+
+        //取出文件后缀
+        let pos = 0;
+        for(let i = 0;i<path.length;++i){
+            if(path[i] === '.') pos = i;
+        }
+        let last = path.substring(pos+1,path.length);
+
+        //判断是否是MP4格式
+        if(last !== "mp4") {
+            msg2.innerHTML = "文件格式不正确,请选择MP4格式的文件";
+            return false;
+        }else{
+            msg1.innerHTML = "";
+        }
+
+        return true;
+    }
+</script>
+</body>
+</html>

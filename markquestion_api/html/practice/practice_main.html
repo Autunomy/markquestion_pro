@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="common/js_css :: js_css">
+    <meta charset="UTF-8">
+    <title>练习题目主页</title>
+</head>
+<body>
+<!--顶部导航栏 目前的计划是做成横向的导航栏-->
+<div class="ui grid">
+    <div class="row" th:include="common/nav :: nav"></div>
+    <div class="two wide column"></div>
+    <div class="seven wide column">
+        <div class="row">
+            <div th:if="${practiceUser == null}">
+                <!--未注册或登陆显示-->
+                <form th:action="@{/practice/loginOrSign}" method="post" enctype="multipart/form-data">
+                    <input style="width: 100%;height: 40px;border: 1px solid #C0C0C0;border-radius: 5px" type="text"
+                           placeholder="请输入你的id号" name="userId" id="userId"> <br><br>
+                    头像：<input type="file" name="headImg"> <br><br>
+                    <button type="submit" class="ui button">登陆</button>
+                    <button id="makeUserId" type="button" class="ui button">生成ID</button>
+                </form>
+                <br>
+                使用说明:第一次使用请点击<b>生成ID</b>按钮,会自动生成一个id,个人信息就会被保存在这个唯一id中，请自行保存
+            </div>
+        </div>
+        <br>
+        <div class="ui cards">
+            <div class="card" th:each="practiceTag : ${practiceTags}">
+                <div class="content">
+                    <div class="header" th:text="${practiceTag.practiceTagName}">Java练习题</div>
+                    <div class="description" th:text="${practiceTag.practiceTagNum}">题目数量：999</div>
+                </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <div th:if="${#request.getSession().getAttribute('practice_user') != null}">
+                            <a th:href="@{/practice/beginDoPractice?tagName=}+${practiceTag.practiceTagName}" class="ui basic green button">立即开始</a>
+                        </div>
+                        <div th:if="${#request.getSession().getAttribute('practice_user') == null}">
+                            <a class="ui basic green button disabled">立即开始</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="card">-->
+            <!--                <div class="content">-->
+            <!--                    <div class="header">设计模式练习题</div>-->
+            <!--                    <div class="description">题目数量：999</div>-->
+            <!--                </div>-->
+            <!--                <div class="extra content">-->
+            <!--                    <div class="ui two buttons">-->
+            <!--                        <a href="" class="ui basic green button">立即开始</a>-->
+            <!--                        &lt;!&ndash;                        <a href="" class="ui basic blue button">查看当前题库</a>&ndash;&gt;-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div class="card">-->
+            <!--                <div class="content">-->
+            <!--                    <div class="header">设计模式练习题</div>-->
+            <!--                    <div class="description">题目数量：999</div>-->
+            <!--                </div>-->
+            <!--                <div class="extra content">-->
+            <!--                    <div class="ui two buttons">-->
+            <!--                        <a href="" class="ui basic green button">立即开始</a>-->
+            <!--                        &lt;!&ndash;                        <a href="" class="ui basic blue button">查看当前题库</a>&ndash;&gt;-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+    </div>
+
+    <div class="six wide column">
+        <div th:if="${practiceUser != null}">
+            <span id="mainId" hidden th:text="${practiceUser.id}"></span>
+            <div style="border: 1px solid #D0D0D0;border-radius: 10px;padding: 20px">
+                <h2 style="">个人信息</h2>
+                <div style="text-align: center">
+                    <img class="ui avatar image" th:src="${practiceUser.practiceUserImg}">
+                    <span style="font-size:15px;margin-left: 5px;display: inline-block">[[${practiceUser.practiceUserUsername}]]</span>
+                    <span style="font-size:15px;margin-left: 5px;display: inline-block">练习总数：[[${practiceUser.practiceUserPracticeNum}]]</span>
+                    <span style="font-size:15px;margin-left: 5px;display: inline-block">错题总数：[[${practiceUser.practiceUserPracticeWrongNum}]]</span>
+                    <span style="font-size:15px;margin-left: 5px;display: inline-block">正确率：[[${rightPer}]]%</span>
+                </div>
+                <br>
+                <div style="text-align: center">
+                    <a href="" class="ui button">修改个人信息</a>
+                    <a th:href="@{/practice/signOut}" class="ui button">注销</a>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div id="wrongAnswer" style="border: 1px solid #D0D0D0;border-radius: 10px;padding: 20px">
+                <h2>错过的题目</h2>
+                错误题目的题号：
+                <select name="wrongId" id="wrongId" style="width: 150px;height: 30px;border: 1px solid #D0D0D0;border-radius: 5px;">
+                    <option value="" th:each="wrongPractice : ${wrongPractices}" th:text="${wrongPractice.id}" th:value="${wrongPractice.id}">1
+                    </option>
+                </select>
+                <!--这里使用ajax来更新-->
+                <div id="content" style="font-size: 15px">
+                    题目来源：leetcode <br>
+                    正确人数：10<br>
+                    错误人数：10<br>
+                    题目信息 <br>
+                    <div style="background-color: #F0F0F0">
+                        下面对静态数据成员的描述中，正确的是?
+                        <br>
+                        A、静态数据成员可以在类体内进行初始化 <br>
+                        B、静态数据成员不可以被类的对象调用 <br>
+                        C、静态数据成员不受private控制符的作用 <br>
+                        D、静态数据成员可以直接用类名调用 <br>
+                        答案：A <br>
+                        解析：巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉 <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<script>
+    $(function () {
+        $("#practice").attr("class", "item active");
+    })
+
+    //获取一个随机ID作为用户的ID
+    $("#makeUserId").click(function () {
+        $.ajax({
+            url: "/practice/makeUserId",
+            type: "GET",
+            success: function (args) {
+                $("#userId").val(args);
+            }
+        })
+    });
+
+    //根据下拉菜单修改当前选中的错过的题目
+    $("#wrongId").change(function (){
+        let content = $("#content");
+        let wrongId = $("#wrongId").select().val();
+        //根据id获取题目信息
+        $.ajax({
+            url: "/practice/getWrongPractice?id="+wrongId,
+            type: "GET",
+            success:function (args){
+                let practice = JSON.parse(args);
+                content.empty();
+
+                let practiceFrom = document.createTextNode("题目来源："+practice.practiceFrom);
+                content.append(practiceFrom);
+                let br1 = document.createElement("br");
+                content.append(br1);
+
+                let practiceRight = document.createTextNode("正确人数："+practice.practiceRight);
+                content.append(practiceRight);
+                let br2 = document.createElement("br");
+                content.append(br2);
+
+                let practiceFalse = document.createTextNode("错误人数："+practice.practiceFalse);
+                content.append(practiceFalse);
+                let br3 = document.createElement("br");
+                content.append(br3);
+
+                let text1 = document.createTextNode("题目信息");
+                content.append(text1);
+                let br4 = document.createElement("br");
+                content.append(br4);
+
+                let div1 = document.createElement("div");
+                div1.setAttribute("style","background-color: #F0F0F0");
+                let text2 = document.createTextNode(practice.practiceName);
+                div1.append(text2);
+                let br5 = document.createElement("br");
+                div1.append(br5);
+                let changes = practice.practiceChanges+"";
+                //选项内容
+                for (const string of changes.split("###")) {
+                    div1.append(document.createTextNode(string));
+                    div1.append(document.createElement("br"));
+                }
+                div1.append(document.createTextNode("答案："+practice.practiceAnswer));
+                div1.append(document.createElement("br"));
+                div1.append(document.createTextNode("解析："+practice.practiceExplain));
+                div1.append(document.createElement("br"));
+
+                content.append(div1);
+            }
+        })
+    });
+
+
+</script>
+</body>
+</html>

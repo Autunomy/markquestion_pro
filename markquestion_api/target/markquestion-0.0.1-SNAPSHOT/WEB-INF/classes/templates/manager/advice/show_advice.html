@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>推荐详细信息后台展示页面</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+<!--    &lt;!&ndash;引入semantic&ndash;&gt;-->
+<!--    <script src="/js/jquery.min.js"></script>-->
+<!--    <script src="/js/semantic.min.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/semantic.min.css">-->
+
+<!--    &lt;!&ndash;引入阿里字体图标库&ndash;&gt;-->
+<!--    <script src="/js/iconfont.js"></script>-->
+<!--    <link rel="stylesheet" href="/css/iconfont.css">-->
+
+<!--    &lt;!&ndash;网站图标&ndash;&gt;-->
+<!--    <link rel="icon" type="image/x-icon" href="/css/favico.ico">-->
+
+<!--    &lt;!&ndash;代码高亮&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/css/default.min.css">-->
+<!--    <script src="/js/highlight.min.js"></script>-->
+<!--    <script>hljs.initHighlightingOnLoad();</script>-->
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏-->
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav">
+        <!--        <nav class="ui inverted attached segment">-->
+        <!--            <div class="ui container">-->
+        <!--                <div class="ui inverted secondary stackable menu">-->
+        <!--                    &lt;!&ndash;导航部分&ndash;&gt;-->
+        <!--                    <h2 class="ui teal header item">后台页面</h2>-->
+        <!--                    <a th:href="@{/question/index}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe867;</i>前台首页</a>-->
+        <!--                    <a th:href="@{/manage/index}" class="item active" style="font-size: initial"><i class="icon iconfont">&#xe867;</i>后台首页</a>-->
+        <!--                    <a th:href="@{/manage/question/showQuestion}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe70d;</i>题解管理</a>-->
+        <!--                    <a th:href="@{/manage/author/toManageAuthorMessage}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe7de;</i>博主信息管理</a>-->
+        <!--                    <a th:href="@{/manage/contest/showContest}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe746;</i>比赛日程表管理</a>-->
+        <!--                    <a th:href="@{/manage/friendLink/showFriendLink}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe6f7;</i>友链管理</a>-->
+        <!--                    <a th:href="@{/manage/video/showAllVideos}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe73b;</i></i>Video</a>-->
+        <!--                    <a th:href="@{/manage/access/showAccess}" class="item" style="font-size: initial"><i class="icon iconfont">&#xe7ed;</i></i>网站访客管理</a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </nav>-->
+    </div>
+
+
+    <!--占位-->
+    <div class="three wide column"></div>
+    <div class="ten wide column" >
+        <!--展示图片-->
+        <img th:src="${advice.adviceImg}" width="200px" height="200px" style="display:block;margin: 20px auto;">
+        <h1 style="text-align: center;margin-top: 20px" th:text="${advice.adviceName}"></h1>
+        <br>
+        <div class="ui message" style="width: 800px;margin: 0px auto;border: 1px gray;border-radius: 2px">
+            <div th:utext="${content}" id="content">
+                正文部分
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //代码高亮显示
+    $(function () {
+        //加上这个代码才能进行高亮显示
+        $('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
+        });
+    })
+</script>
+</body>
+</html>

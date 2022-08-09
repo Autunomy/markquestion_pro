@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav"></div>
+    <div class="three wide column"></div>
+    <div class="twelve wide column">
+        <div style="margin-bottom: 20px">
+            <a th:href="@{/manage/practice/toCreatePracticeTag}" class="ui green button" href="">创建题库</a>
+            <a th:href="@{/manage/practice/toAddPractice}" class="ui blue button">添加习题</a>
+            <a th:href="@{/manage/practice/managePracticeUser}" class="ui gray button">用户管理</a>
+            <!--搜索框-->
+            <div class="ui icon input">
+                <form class="ui inline form" th:action="@{/manage/practice/searchPractice}">
+                    <div class="fields">
+                        <div class="field" style="margin: auto 0px !important;">
+                            <i class="icon iconfont">&#xe6ac;</i>
+                        </div>
+                        <div class="field">
+                            <input type="text" name="id" placeholder="根据题号搜索">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="ui cards">
+            <div th:each="practiceTag : ${practiceTags}" class="card">
+                <div class="content">
+                    <div th:text="${practiceTag.practiceTagName}" class="header">Java练习题</div>
+                    <div class="description">题目数量：[[${practiceTag.practiceTagNum}]]</div>
+                </div>
+                <div class="extra content">
+                    <div class="ui three buttons">
+                        <a th:href="@{/manage/practice/toPracticeTagShow?practiceTag=}+${practiceTag.practiceTagName}" class="ui basic green button" style="font-size: small;">查看</a>
+                        <a th:href="@{/manage/practice/toUpdatePracticeTag?id=}+${practiceTag.id}" class="ui basic blue button">修改</a>
+                        <!--<a class="ui basic red button">删除</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        //将导航标为选中状态
+        $("#managePractice").attr("class","item active");
+    })
+</script>
+</body>
+</html>

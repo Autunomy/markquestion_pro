@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>推荐页面</title>
+    <div th:include="common/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <!--顶部导航栏 目前的计划是做成横向的导航栏-->
+    <div class="row" th:include="common/nav :: nav">
+        <!--        <nav class="ui inverted attached segment">-->
+        <!--            <div class="ui container">-->
+        <!--                <div class="ui inverted secondary stackable menu">-->
+        <!--                    &lt;!&ndash;stackable 可堆叠 响应移动端&ndash;&gt;-->
+        <!--                    &lt;!&ndash;导航部分&ndash;&gt;-->
+        <!--                    <h2 class="ui teal header item">Autunomy</h2>-->
+        <!--                    <a href="../index.html" class="item" style="font-size: initial"><i class="home icon"></i>首页</a>-->
+        <!--                    <a href="../author/author_message.html" class="item" style="font-size: initial"><i-->
+        <!--                            class="address card outline icon"></i>博主信息</a>-->
+        <!--                    <a href="../table/contest_table.html" class="item" style="font-size: initial"><i-->
+        <!--                            class="calendar alternate icon"></i>比赛日程表</a>-->
+        <!--                    <a href="../table/link_table.html" class="item" style="font-size: initial"><i-->
+        <!--                            class="linkify icon"></i>友链</a>-->
+        <!--                    <a href="./advice_main.html" class="item active" style="font-size: initial">-->
+        <!--                        <i class="star icon"></i>推荐-->
+        <!--                    </a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </nav>-->
+    </div>
+    <!--占位-->
+    <div class="one wide column"></div>
+    <!--分类-->
+    <div class="two wide column">
+        <h2 style="width:65px;margin: 0px auto;display: block;">分类</h2>
+        <div class="ui segment">
+            <div class="ui relaxed divided list">
+                <div class="item" th:each="adviceTag : ${adviceTags}">
+                    <div class="content">
+                        <div class="header">
+                            [[${adviceTag.adviceTagName}]]
+                            <div style="float:right !important;">数量：[[${adviceTag.adviceTagNum}]]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--占位-->
+    <div class="one wide column"></div>
+    <!--主体内容-->
+    <div class="seven wide column">
+        <!--搜索框-->
+        <div class="ui icon input">
+            <div style="margin: auto 0px !important;"><i class="icon iconfont">&#xe6ac;</i></div>
+            <form class="ui form" th:action="@{/advice/search}" method="get">
+                <input name="search" type="text" placeholder="根据名称和标签搜索...">
+            </form>
+        </div>
+        <br>
+        <br>
+        <!--主体-->
+        <div style="border: 0px solid black;border-radius: 2px">
+            <div th:each="advice : ${advices}">
+                <img style="float: left;margin-right: 20px" th:src="${advice.adviceImg}" width="100px" height="100px">
+                <a id="adviceName" th:text="${advice.adviceName}" th:href="@{/advice/showAdvice?id=}+${advice.id}"
+                   style="text-decoration: none;color: black;font-size: x-large;display: inline-block;margin-bottom: 15px">学习通脚本</a>
+                <p th:text="${advice.adviceDescribe}" style="font-size: initial">
+                    概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）</p>
+                <p>
+                    <i class="icon iconfont">&#xe7f1;</i><span th:text="${advice.adviceAuthor}"></span>
+                    &nbsp;&nbsp;
+                    <i class="icon iconfont">&#xe746;</i><span
+                        th:text="${#dates.format(advice.createTime,'yyyy-MM-dd')}">2022-06-29</span>
+                    &nbsp;&nbsp;
+                    <i class="icon iconfont">&#xe66c;</i><span th:text="${advice.adviceTag}">软件</span>
+                    &nbsp;&nbsp;
+                    <i class="icon iconfont">&#xe7ed;</i><span th:text="${advice.adviceWatch}"></span>
+                </p>
+                <hr>
+            </div>
+            <!--            <div>-->
+            <!--                <a href=""-->
+            <!--                   style="text-decoration: none;color: black;font-size: x-large;display: block;margin-bottom: 15px">学习通脚本</a>-->
+            <!--                <p style="font-size: initial">-->
+            <!--                    概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）</p>-->
+            <!--                <p>-->
+            <!--                    <span><i class="user icon"></i>Autunomy</span>-->
+            <!--                    &nbsp;&nbsp;-->
+            <!--                    <span><i class="calendar alternate icon"></i>2022-06-29</span>-->
+            <!--                    &nbsp;&nbsp;-->
+            <!--                    <span><i class="tag icon"></i>软件</span>-->
+            <!--                    &nbsp;&nbsp;-->
+            <!--                    <span><i class="eye icon"></i>123</span>-->
+            <!--                </p>-->
+            <!--                <hr>-->
+            <!--            </div>-->
+            <!--            <div>-->
+            <!--                <a href=""-->
+            <!--                   style="text-decoration: none;color: black;font-size: x-large;display: block;margin-bottom: 15px">学习通脚本</a>-->
+            <!--                <p style="font-size: initial">-->
+            <!--                    概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）概览（可以从内容中抽取出来一部分作为概览）</p>-->
+            <!--                <p>-->
+            <!--                    <span><i class="user icon"></i>Autunomy</span>-->
+            <!--                    &nbsp;&nbsp;-->
+            <!--                    <span><i class="calendar alternate icon"></i>2022-06-29</span>-->
+            <!--                    &nbsp;&nbsp;-->
+            <!--                    <span><i class="tag icon"></i>软件</span>-->
+            <!--                    &nbsp;&nbsp;-->
+            <!--                    <span><i class="eye icon"></i>123</span>-->
+            <!--                </p>-->
+            <!--                <hr>-->
+            <!--            </div>-->
+            <div style="width: 275px;margin: 0px auto;">
+                <div style="display: inline-block" th:if="${pageNum > 1}">
+                    <a th:href="@{/advice/toLastAdvicePage?pageNum=}+${pageNum}" class="ui button">上一页</a>
+                </div>
+                <div style="display: inline-block" th:if="${pageNum <= 1}">
+                    <a th:href="@{/advice/toLastAdvicePage?pageNum=}+${pageNum}" class="ui button disabled">上一页</a>
+                </div>
+                <span style="font-size: initial">当前页数:</span><span style="font-size: initial"
+                                                                   th:text="${pageNum}">10</span>
+                <div style="display: inline-block" th:if="${pageNum < adviceSize}">
+                    <a th:href="@{/advice/toNextAdvicePage?pageNum=}+${pageNum}" class="ui button">下一页</a>
+                </div>
+                <div style="display: inline-block" th:if="${pageNum >= adviceSize}">
+                    <a th:href="@{/advice/toNextAdvicePage?pageNum=}+${pageNum}" class="ui button disabled">下一页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="five wide column"></div>
+    <!--底部-->
+    <div style="margin: 20px auto;font-size: large" th:include="common/footer :: footer"></div>
+</div>
+<script>
+    $(function () {
+        $("#advice").attr("class", "item active");
+    })
+
+    // // /*使用ajax请求获取单个推荐的详情并显示在右边的详情框中*/
+    // $("#adviceName").click(function(){
+    //     let adviceId = $("#adviceId").text();
+    //     $.ajax({
+    //         url:"/advice/getAdvice?adviceId="+adviceId,
+    //         type:"GET",
+    //         success:function(args){
+    //             let advice = JSON.parse(args);
+    //             console.log(advice)
+    //             let adviceContent = $("#adviceContent");
+    //             adviceContent.empty();
+    //             // adviceContent.append("<img class='disabled centered tiny ui image' src='"+advice.adviceImg+"'>"+
+    //             //     "<span style='font-size: x-large;display: block;text-align: center;margin-top: 20px'>"+advice.adviceName+"</span>"+
+    //             //     "<br>"+
+    //             //     "<p style='display: block;width:310px;margin: 0px auto'>" +
+    //             //     "<span><i class='icon iconfont'>&#xe7f1;</i>"+advice.adviceAuthor+"</span>"+
+    //             //     "&nbsp;&nbsp;"+
+    //             //     "<span><i class='icon iconfont'>&#xe7f1;</i>"+$("#"+advice.id+"time").text()+"</span>"+
+    //             //     "&nbsp;&nbsp;"+
+    //             //     "<span><i class='icon iconfont'>&#xe66c;</i>"+advice.adviceTag+"</span>"+
+    //             //     "&nbsp;&nbsp;"+
+    //             //     "<span><i class='icon iconfont'>&#xe7ed;</i>"+advice.adviceWatch+"</span>"+
+    //             //     "</p>"+
+    //             //     "<hr>")
+    //             //图片
+    //             let img = document.createElement("img");
+    //             img.getAttributeNode("class").value = "centered tiny ui image";
+    //             img.getAttributeNode("src").value = advice.adviceImg;
+    //             adviceContent.append(img);
+    //
+    //             //推荐名
+    //             let name = document.createElement("span");
+    //             name.getAttributeNode("style").value="font-size: x-large;display: block;text-align: center;margin-top: 20px";
+    //             name.innerText = advice.adviceName;
+    //             adviceContent.append(name);
+    //
+    //             //换行
+    //             let br = document.createElement("br");
+    //             adviceContent.append(br);
+    //
+    //             //p标签 为了居中用的
+    //             let p = document.createElement("p");
+    //
+    //             p.getAttributeNode("style").value = "display: block;width:310px;margin: 0px auto";
+    //             let author = document.createElement("span");
+    //             let i1 = document.createElement("i");
+    //             i1.getAttributeNode("class").value = "icon iconfont";
+    //             i1.innerText = "&#xe7f1;";
+    //             author.append(i1);
+    //             author.innerText = advice.adviceAuthor;
+    //
+    //
+    //
+    //         },
+    //         error:function(){
+    //
+    //         }
+    //     })
+    //     return false;
+    // })
+</script>
+</body>
+</html>

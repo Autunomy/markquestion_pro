@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>创建题库</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav"></div>
+    <!--表单-->
+    <div style="margin: 0px auto !important;width: 500px">
+        <form class="ui form" style="font-size: large" method="get"
+              th:action="@{/manage/practice/createPracticeTag}">
+            <div class="field">
+                <label>题库名称</label>
+                <input name="practiceTagName" type="text" placeholder="题库名称"/>
+            </div>
+            <button class="ui button" type="submit">创建</button>
+        </form>
+    </div>
+
+</div>
+<script>
+    $(function(){
+        //将导航标为选中状态
+        $("#managePractice").attr("class","item active");
+    })
+</script>
+</body>
+</html>

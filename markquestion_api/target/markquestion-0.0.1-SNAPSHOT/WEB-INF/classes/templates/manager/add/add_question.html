@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>题解添加页面</title>
+    <div th:include="manager/manageCommon/js_css :: js_css"></div>
+</head>
+<body>
+<div class="ui grid">
+    <!--导航-->
+    <div class="row" th:include="manager/manageCommon/nav :: manageNav">
+
+    </div>
+
+    <!--主体-->
+    <div style="margin: 0px auto !important;width: 1000px">
+        <form class="ui form" style="font-size: large" method="post" th:action="@{/manage/question/addQuestion}">
+
+            <div class="field">
+                <label>题目名称</label>
+                <input type="text" name="question_name" placeholder="题目名称">
+            </div>
+            <div class="field">
+                <label>题目来源</label>
+                <select name="question_from">
+                    <option th:each="platform : ${platforms}" th:text="${platform.platform}">leetcode</option>
+                    <!--                    <option>newCoder</option>-->
+                    <!--                    <option>codeforces</option>-->
+                    <!--                    <option>ACWing</option>-->
+                </select>
+                <a th:href="@{/manage/contest/toAddContestPlatform}">点击这里添加题目来源</a>
+            </div>
+            <div class="field">
+                <label>作者</label>
+                <input type="text" name="author" placeholder="作者">
+            </div>
+            <div class="field">
+                <label>标签</label>
+                <input type="text" name="tag" placeholder="标签">
+            </div>
+            <div class="field">
+                <label>题解</label>
+                <textarea style="resize: none;
+                    height: 500px;
+                    width: 50%;
+                    float: left;
+                    !important;" id="solution" name="solution"></textarea>
+                <div style="height:432px;
+                    float: left;
+                    width: 50%;
+                    border: 1px solid darkgrey;
+                    border-radius: 5px;
+                    !important;overflow: scroll" id="show">
+
+                </div>
+            </div>
+            <button class="ui button" type="submit">提交</button>
+        </form>
+    </div>
+
+</div>
+
+<!--占位-->
+<div>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+
+<script>
+
+    $("#solution").on("keyup blur",function () {
+        let text = $("#solution").val();
+        console.log(text)
+        $("#show").html(marked.parse(text));
+
+        //加上这个代码才能进行高亮显示
+        $('pre code').each(function(i, block){
+            hljs.highlightBlock(block);
+        });
+    })
+
+    $(function(){
+        $("#manageQuestion").attr("class","item active");
+    })
+</script>
+</body>
+</html>
