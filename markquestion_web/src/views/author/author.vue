@@ -1,8 +1,8 @@
 <template>
 <div>
-    <el-row>
+    <el-row style="margin-bottom: 20px">
         <div style="margin-top: 20px">
-            <el-col :span="4" :offset="5">
+            <el-col :span="4" :offset="3">
                 <el-card>
 
                     <div style="padding: 14px;">
@@ -14,12 +14,13 @@
                     </div>
                 </el-card>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="14">
                 <el-card style="margin-left: 6px">
                     <el-tabs v-model="activeTab" @tab-click="handleClick">
                         <el-tab-pane label="博主介绍" name="/author/description" route="/author/description"></el-tab-pane>
-                        <el-tab-pane label="题解列表" name="/author/wrongPracticeList"></el-tab-pane>
-                        <el-tab-pane label="错题集" name="/author/solutionList"></el-tab-pane>
+                        <el-tab-pane label="题解列表" name="/author/solutionList"></el-tab-pane>
+                        <el-tab-pane label="错题集" name="/author/wrongPracticeList"></el-tab-pane>
+                        <el-tab-pane label="留言板" name="/author/messageBoard"></el-tab-pane>
                         <!--路由显示区域-->
                         <router-view/>
                     </el-tabs>

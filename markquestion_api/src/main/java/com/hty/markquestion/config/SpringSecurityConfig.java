@@ -30,7 +30,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/images/**",
                         "/advice/**",
                         "/practice/**",
-                        "/verification.html").permitAll()//设置哪些路径可以直接访问 不需要认证
+                        "/verification.html",
+                        "/messageBoard/**",
+                        "/comment/**").permitAll()//设置哪些路径可以直接访问 不需要认证
                 .anyRequest().authenticated()
                 .and().csrf().disable();//关闭csrf防护
     }

@@ -7,13 +7,17 @@ import router from "@/router";
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import Highlight from './utils/highlight'
+import BootstrapVue from 'bootstrap-vue'
 
 //引入全局样式
 import './assets/css/removeOld.css'//去除浏览器的默认padding和margin
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor) //markdown编辑器支持图片上传
 Vue.use(Highlight) //代码高亮
+Vue.use(BootstrapVue)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false

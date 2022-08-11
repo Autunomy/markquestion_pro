@@ -31,6 +31,8 @@ public class Question {
     private Integer watch;
     @ApiModelProperty("难度")
     private String level;
+    @ApiModelProperty("原题链接")
+    private String link;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("创建时间")

@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "bootstrap": "^3.4.1",
+    "bootstrap-vue": "^2.22.0",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.9",
     "github-markdown-css": "^5.1.0",

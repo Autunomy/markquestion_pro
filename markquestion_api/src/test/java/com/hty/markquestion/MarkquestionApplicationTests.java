@@ -1,6 +1,7 @@
 package com.hty.markquestion;
 
 import com.hty.markquestion.mapper.*;
+import com.hty.markquestion.mapper.QuestionMapper;
 import com.hty.markquestion.pojo.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

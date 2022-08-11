@@ -1,5 +1,5 @@
 <template>
-<h1>博主介绍</h1>
+    <el-empty description="他比较懒，还没想好怎么写..."></el-empty>
 </template>
 
 <script>

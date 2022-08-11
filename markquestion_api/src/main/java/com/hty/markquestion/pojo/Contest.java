@@ -29,6 +29,8 @@ public class Contest {
     private Date contestTime;
     @ApiModelProperty("表示比赛是否过期 过期为1 未过期为0")
     private Integer isExpired;
+    @ApiModelProperty("比赛名称")
+    private String contestName;
 
     @TableLogic//逻辑删除
     @ApiModelProperty("mybatis-plus需要的删除字段")

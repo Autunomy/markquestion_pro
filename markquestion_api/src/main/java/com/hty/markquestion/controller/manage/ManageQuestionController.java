@@ -2,6 +2,7 @@ package com.hty.markquestion.controller.manage;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hty.markquestion.mapper.*;
+import com.hty.markquestion.mapper.QuestionMapper;
 import com.hty.markquestion.pojo.*;
 import com.hty.markquestion.util.MarkDown2HtmlUtils;
 import io.swagger.annotations.ApiOperation;

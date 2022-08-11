@@ -10,10 +10,11 @@
                  :router="true">
             <el-menu-item index="/index" style="margin-left: 160px;">首页</el-menu-item>
             <el-menu-item index="/author">博主信息</el-menu-item>
-            <el-menu-item index="3">比赛日程表</el-menu-item>
-            <el-menu-item index="4">友链</el-menu-item>
+            <el-menu-item index="/contest">比赛日程表</el-menu-item>
+            <el-menu-item index="/friendLink">友链</el-menu-item>
             <el-menu-item index="5">推荐</el-menu-item>
             <el-menu-item index="6">语言基础练习</el-menu-item>
+            <el-menu-item index="/blog">博客</el-menu-item>
 
             <!--如果未登陆显示-->
             <el-menu-item
@@ -56,7 +57,7 @@ export default {
     name: "Nav",
     data() {
         return {
-            //当前被选中的路由 作为被激活的导航 如果跳转到了当前路由的子路由下，就对其进行处理，让其仍然选中的是父路由
+            //当前被选中的路由作为被激活的导航 如果跳转到了当前路由的子路由下，就对其进行处理，让其仍然选中的是父路由
             nowRouter: '/' + this.$route.path.split('/')[1],
             //登陆的标识
             isLogin: false,

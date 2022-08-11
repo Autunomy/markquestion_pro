@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao(Mapper)接口-->
+<mapper namespace="com.hty.markquestion.mapper.QuestionMapper">
+    <select id="searchQuestion" resultType="question">
+        select *
+        from question
+        where match(question_name) against(#{search})
+           or id = #{search}
+           or match(question_from) against(#{search})
+           or match(author) against(#{search})
+        limit #{currentPage},#{pageSize};
+    </select>
+
+    <select id="searchCount" resultType="int">
+        select count(*)
+        from question
+        where match(question_name) against(#{search})
+           or id = #{search}
+           or match(question_from) against(#{search})
+           or match(author) against(#{search});
+    </select>
+</mapper>

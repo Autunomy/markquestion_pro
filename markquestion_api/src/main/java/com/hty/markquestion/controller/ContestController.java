@@ -2,10 +2,12 @@ package com.hty.markquestion.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hty.markquestion.constant.ResponseMessage;
 import com.hty.markquestion.mapper.ContestMapper;
 import com.hty.markquestion.mapper.WebBasicMessageMapper;
 import com.hty.markquestion.pojo.Contest;
 import com.hty.markquestion.pojo.WebBasicMessage;
+import com.hty.markquestion.pojo.vo.Response;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -82,6 +85,18 @@ public class ContestController {
         queryWrapper.eq("is_expired",1);
         List<Contest> contests = contestMapper.selectList(queryWrapper);
         return JSON.toJSONString(contests);
+    }
+
+
+//-----------------------------------------------------------------------------------------
+    @GetMapping("/queryContestByDate")
+    @ResponseBody
+    public String queryContestByDate(@RequestParam("date") String date){
+        QueryWrapper<Contest> queryWrapper = new QueryWrapper();
+        queryWrapper.like("contest_time",date);
+        List<Contest> contestList = contestMapper.selectList(queryWrapper);
+        Response response = new Response(ResponseMessage.SUCCESS, contestList);
+        return JSON.toJSONString(response);
     }
 
 }
