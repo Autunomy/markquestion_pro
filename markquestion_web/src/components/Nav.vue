@@ -15,11 +15,12 @@
             <el-menu-item index="5">推荐</el-menu-item>
             <el-menu-item index="6">语言基础练习</el-menu-item>
             <el-menu-item index="/blog">博客</el-menu-item>
+            <el-menu-item index="7">工具</el-menu-item>
 
             <!--如果未登陆显示-->
             <el-menu-item
                 style="float: right;margin-right: 150px"
-                @click="changeDialogStatus"
+                @click="changeLoginDialogStatus"
                 v-if="!isLogin">
                 登陆 | 注册
             </el-menu-item>
@@ -36,15 +37,57 @@
             </el-submenu>
         </el-menu>
 
-        <!--注册框-->
-        <el-dialog :visible.sync="isShow">
-            <el-form :model="registerForm">
-                <h1>注册和登陆实现</h1>
+        <!--账号密码登陆框-->
+        <el-dialog :visible.sync="isShowLogin" width="500px">
+            <h3 style="text-align: center">欢迎访问本站</h3>
+            <el-form label-width="80px" :label-position="labelPosition" :model="registerForm">
+                <el-form-item label="用户名">
+                    <el-input v-model="registerForm.username" placeholder="请输入用户名"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input v-model="registerForm.password" type="password" placeholder="请输入密码"/>
+                </el-form-item>
+                <div style="margin-left: 300px;">
+                    <el-button size="mini" type="primary" >登陆</el-button>
+                    <el-button size="mini" type="primary" @click="changeRegisterDialogStatus">注册</el-button>
+                </div>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" >注册</el-button>
-                <el-button @click="changeDialogStatus">取 消</el-button>
-            </div>
+            更多登陆方式:
+            <a href="Javascript:void(0)">
+                <img loading="lazy"
+                     src="https://wiki.connect.qq.com/wp-content/uploads/2021/01/bt_blue_24X24.png"
+                     width="24"
+                     height="24">
+            </a>
+            |
+            <a href="Javascript:void(0)">
+                邮箱登陆
+            </a>
+        </el-dialog>
+
+        <!--注册框-->
+        <el-dialog :visible.sync="isShowRegister" width="500px">
+            <h3 style="text-align: center">欢迎访问本站</h3>
+            <el-form label-width="80px" :label-position="labelPosition" :model="registerForm">
+                <el-form-item label="用户名">
+                    <el-input v-model="registerForm.username" placeholder="请输入用户名"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input v-model="registerForm.password" type="password" placeholder="请输入密码"/>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="registerForm.email" type="email" placeholder="请输入邮箱"/>
+                    <el-button  size="mini">获取验证码</el-button>
+                    <span style=""></span>
+                </el-form-item>
+                <el-form-item label="验证码">
+                    <el-input v-model="registerForm.vcode" placeholder="请输入验证码"/>
+                </el-form-item>
+                <div>
+                    <a style="text-decoration: none;color: #6b6c70;display: inline-block" href="Javascript:void(0)" @click="changeLoginDialogStatus">返回登陆</a>
+                    <el-button style="margin-left: 380px;display: inline-block" size="mini" type="primary" >注册</el-button>
+                </div>
+            </el-form>
         </el-dialog>
     </div>
 </template>
@@ -61,29 +104,34 @@ export default {
             nowRouter: '/' + this.$route.path.split('/')[1],
             //登陆的标识
             isLogin: false,
-            //是否展示弹出框进行注册或者登陆
-            isShow: false,
+            //是否展示弹出框进行登陆
+            isShowLogin: false,
+            //是否展示弹出框进行注册
+            isShowRegister: false,
             //注册的表单项
             registerForm:{
                 username:"",//用户名
                 password:"",//密码
                 email:"",//邮箱
                 vcode:""//验证码
-            }
+            },
+            //登陆注册框的对其方式
+            labelPosition:'right'
         }
     },
     methods: {
-        //判断用户是否登陆
-        judgeIsLogin() {
-            if (getToken()) {
-                this.isLogin = true
-            }else{
-                this.isLogin = false;
-            }
+        //修改 登陆弹出框的状态
+        changeLoginDialogStatus(){
+            this.isShowLogin = !this.isShowLogin;
+            //如果注册框未关闭就关闭注册框
+            if(this.isShowRegister) this.isShowRegister = !this.isShowRegister;
         },
-        //修改 登陆注册弹出框的状态
-        changeDialogStatus(){
-            this.isShow = !this.isShow;
+        //修改注册弹出框的状态
+        changeRegisterDialogStatus(){
+            //打开注册框
+            this.isShowRegister = !this.isShowRegister;
+            //关闭登陆框
+            this.isShowLogin = !this.isShowLogin;
         }
     }
 }

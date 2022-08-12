@@ -144,7 +144,7 @@
                 <div style="margin-bottom: 20px"></div>
             </div>
         </el-col>
-        <!--侧面题解信息-->
+        <!--侧面信息-->
         <el-col :span="4" style="font-size: 18px;line-height: 30px;margin-left: 10px">
             <el-card class="box-card" style="margin-top: 35px">
                 <div slot="header" class="clearfix">
@@ -154,17 +154,11 @@
                     </el-button>
                 </div>
                 <div class="text item">
-                    {{ '作者:' + question.author }}
+                    {{ '作者:' }}
+                    <a href="">{{question.author}}</a>
                 </div>
                 <div class="text item">
                     {{ '浏览量:' + question.watch }}
-                </div>
-                <div class="text item">
-                    {{ '算法标签:' }}
-                    <el-tag
-                        size="mini">
-                        {{ 'DP' }}
-                    </el-tag>
                 </div>
                 <div class="text item">
                     {{ '难度:' }}
@@ -175,8 +169,23 @@
                         {{ question.level }}
                     </el-tag>
                 </div>
+                <div class="text item">
+                    {{ '算法标签:' }}
+                    <br>
+                    <el-tag
+                        size="mini"
+                        style="margin-right: 4px">
+                        {{ 'DP' }}
+                    </el-tag>
+                    <el-tag
+                        size="mini"
+                        style="margin-right: 4px">
+                        {{ '快排' }}
+                    </el-tag>
+                </div>
             </el-card>
         </el-col>
+
     </el-row>
 </template>
 

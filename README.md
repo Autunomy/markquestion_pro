@@ -7,3 +7,4 @@ contest表添加一个字段 比赛名称  contestName
 新建表comment评论表
 ```
 
+创建blog文件夹

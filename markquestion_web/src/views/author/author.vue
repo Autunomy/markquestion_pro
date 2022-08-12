@@ -3,8 +3,8 @@
     <el-row style="margin-bottom: 20px">
         <div style="margin-top: 20px">
             <el-col :span="4" :offset="3">
+                <!--头像框-->
                 <el-card>
-
                     <div style="padding: 14px;">
                         <el-image
                             style="width: 100%; height: 200px"
