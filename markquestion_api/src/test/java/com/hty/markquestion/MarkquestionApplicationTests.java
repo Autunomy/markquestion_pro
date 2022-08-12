@@ -3,6 +3,7 @@ package com.hty.markquestion;
 import com.hty.markquestion.mapper.*;
 import com.hty.markquestion.mapper.QuestionMapper;
 import com.hty.markquestion.pojo.*;
+import com.hty.markquestion.service.CommentReplyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,10 +39,12 @@ class MarkquestionApplicationTests {
     @Autowired
     VideoMapper videoMapper;
 
+    @Autowired
+    CommentReplyService commentReplyService;
+
     @Test
     void test1() {
-        List<Video> friendLinks = videoMapper.selectList(null);
-        System.out.println(friendLinks);
+        System.out.println(commentReplyService.queryCommentReply(8));
     }
 
 }

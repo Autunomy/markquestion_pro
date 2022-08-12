@@ -69,47 +69,51 @@
                                 </div>
 
                                 <!--回复的评论展示部分-->
-<!--                                <div>-->
-<!--                                    <div v-for="rcomment in acomment.replyList">-->
-<!--                                        &lt;!&ndash;显示作者&ndash;&gt;-->
-<!--                                        <h4 style="display: inline-block;margin-right: 20px">{{'Autunomy'}} 回复 {{rcomment.userId}}</h4>-->
-<!--                                        &lt;!&ndash;显示评论日期&ndash;&gt;-->
-<!--                                        <h4 style="display: inline-block;margin-right: 20px">{{rcomment.commentDate}}</h4>                            &lt;!&ndash;显示作者&ndash;&gt;-->
-<!--                                        &lt;!&ndash;回复按钮&ndash;&gt;-->
-<!--                                        <h4 style="display: inline-block">-->
-<!--                                            &lt;!&ndash;点击之后需要将当前回复框展示出来 id就是当前选中的评论的id&ndash;&gt;-->
-<!--                                            <a href="JavaScript:void (0)"-->
-<!--                                               @click="changeReply(rcomment.id)"-->
-<!--                                               style="color: #848c84">回复</a>-->
-<!--                                        </h4>-->
-<!--                                        &lt;!&ndash;评论展示部分&ndash;&gt;-->
-<!--                                        <div v-highlight>-->
-<!--                                            <div v-html="rcomment.content"></div>-->
-<!--                                        </div>-->
+                                <div>
+                                    <div v-for="rcomment in acomment.replyList">
+                                        <!--显示头像-->
+                                        <el-col :span="1" style="margin-right: 20px">
+                                            <el-avatar style="display: inline-block;" :size="40" :src="'http://www.autunomy.top/images/head/head.jpg'"/>
+                                        </el-col>
+                                        <!--显示作者-->
+                                        <h4 style="display: inline-block;margin-right: 20px">{{rcomment.username}} 回复 {{'Autunomy'}}</h4>
+                                        <!--显示评论日期-->
+                                        <h4 style="display: inline-block;margin-right: 20px">{{rcomment.commentDate}}</h4>                            <!--显示作者-->
+                                        <!--回复按钮-->
+                                        <h4 style="display: inline-block">
+                                            <!--点击之后需要将当前回复框展示出来 id就是当前选中的评论的id-->
+                                            <a href="JavaScript:void (0)"
+                                               @click="changeReply(rcomment.id)"
+                                               style="color: #848c84">回复</a>
+                                        </h4>
+                                        <!--评论展示部分-->
+                                        <div v-highlight>
+                                            <div v-html="rcomment.content"></div>
+                                        </div>
 
-<!--                                        &lt;!&ndash;回复框&ndash;&gt;-->
-<!--                                        <transition name="el-zoom-in-top">-->
-<!--                                            <div v-show="reply == rcomment.id">-->
-<!--                                                <div style="border: 3px solid #c4ccc4;border-radius: 10px;box-shadow: 0 0 5px #c4ccc4;">-->
-<!--                                                    <mavon-editor-->
-<!--                                                        placeholder="在这里写下评论，支持markdown语法"-->
-<!--                                                        :toolbarsFlag="false"-->
-<!--                                                        style="min-height: 100px;"-->
-<!--                                                        v-model="comment.content"-->
-<!--                                                        :subfield="false"></mavon-editor>-->
-<!--                                                </div>-->
-<!--                                                <div style="margin-left: 5px;">-->
-<!--                                                    <a-->
-<!--                                                        href="JavaScript:void (0)"-->
-<!--                                                        style="margin-left: 92%"-->
-<!--                                                        @click="replyComment(rcomment.id)"-->
-<!--                                                        type="primary">回复评论</a>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </transition>-->
+                                        <!--回复框-->
+                                        <transition name="el-zoom-in-top">
+                                            <div v-show="reply == rcomment.id">
+                                                <div style="border: 3px solid #c4ccc4;border-radius: 10px;box-shadow: 0 0 5px #c4ccc4;">
+                                                    <mavon-editor
+                                                        placeholder="在这里写下评论，支持markdown语法"
+                                                        :toolbarsFlag="false"
+                                                        style="min-height: 100px;"
+                                                        v-model="comment.content"
+                                                        :subfield="false"></mavon-editor>
+                                                </div>
+                                                <div style="margin-left: 5px;">
+                                                    <a
+                                                        href="JavaScript:void (0)"
+                                                        style="margin-left: 92%"
+                                                        @click="replyComment(rcomment.id)"
+                                                        type="primary">回复评论</a>
+                                                </div>
+                                            </div>
+                                        </transition>
 
-<!--                                    </div>-->
-<!--                                </div>-->
+                                    </div>
+                                </div>
 
                                 <!--回复框-->
                                 <transition name="el-zoom-in-top">
@@ -196,7 +200,7 @@ export default {
             article: '',
             //哪个评论对应的回复框需要展示  按照id进行判断
             reply:-1,
-            //题解对的评论列表
+            //题解对应的评论列表
             commentList:[],
             //需要提交的评论信息
             comment:{
@@ -281,6 +285,8 @@ export default {
                     duration:1500
                 })
             }
+            //将当前的评论框隐藏
+            this.reply = -1;
         },
         //获取评论列表
         queryAllCommentByQuestionId(qid){
@@ -292,22 +298,20 @@ export default {
                     for(let i=0;i<this.commentList.length;++i){
                         this.commentList[i].content = marked(this.commentList[i].content)
                         this.commentList[i].commentDate = dateFormat.dateFormat(new Date(this.commentList[i].commentDate));
+                        //获取当前评论的所有回复评论
+                        commentApi.queryReplyCommentById(this.commentList[i].id).then(resp => {
+                            let data = resp.data;
+                            if(data.code === 200){
+                                for(let j=0;j<data.data.length;++j){
+                                    data.data[j].content = marked(data.data[j].content)
+                                    data.data[j].commentDate = dateFormat.dateFormat(new Date(data.data[j].commentDate));
+                                }
+                                Vue.set(this.commentList[i],'replyList',resp.data.data);
+                            }
+                        })
+                        console.log(this.commentList[i]);
                     }
-                    // for(let i = 0;i<this.commentList.length;++i){
-                    //     this.commentList[i].commentDate = dateFormat.dateFormat(new Date(this.commentList[i].commentDate));
-                    //     //获取当前评论下的所有回复
-                    //     this.queryReply(this.commentList[i].id);
-                    //     Vue.set(this.commentList[i],'replyList',[]);//添加属性
-                    //     console.log(this.replyList)
-                    //     for(let j=0;j<this.replyList.length;++j){
-                    //         let temp = JSON.parse(JSON.stringify(this.replyList[j]));
-                    //         // console.log(temp === JSON.stringify(this.replyList[j]))
-                    //         this.commentList[i].replyList.push(temp);
-                    //     }
-                    //     // console.log(this.commentList[i])
-                    //     // console.log(this.replyList)
-                    //     // this.replyList = [];
-                    // }
+
                 }
             })
         },
@@ -318,23 +322,7 @@ export default {
             //设置当前题解的id
             this.comment.qid = this.qid;
             this.saveComment();
-        },
-        //查询当前评论的回复 id是当前评论的id index是在集合中的下标 需要使用递归来进行获取，因为回复的评论也会有回复的评论
-        // queryReply(id){
-        //     // console.log(this.replyList)
-        //     commentApi.queryReplyCommentById(id).then(resp => {
-        //         let data = resp.data;
-        //         for(let i=0;i<data.data.length;++i){
-        //             data.data[i].commentDate = dateFormat.dateFormat(new Date(data.data[i].commentDate));
-        //             // this.commentList[index].replyList.push(data.data[i]);
-        //             this.replyList.push(data.data[i])
-        //             // Vue.set(this.commentList[index].replyList[i],'replyUser',data.data[i].userId);//设置回复的是哪个人的评论
-        //             Vue.set(this.replyList[i],'replyUser',data.data[i].userId);//设置回复的是哪个人的评论
-        //             //递归继续获取
-        //             this.queryReply(this.replyList[i].id);
-        //         }
-        //     })
-        // }
+        }
     }
 }
 </script>

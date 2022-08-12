@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hty.markquestion.mapper.CommentReplyMapper">
+    <select id="queryCommentReply" resultType="commentReply">
+        select c.*,pu.practice_user_username username from comment c inner join practice_user pu on c.user_id = pu.id
+        where c.comment_id = #{id};
+    </select>
+
+
+</mapper>

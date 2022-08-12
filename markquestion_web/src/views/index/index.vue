@@ -36,7 +36,7 @@
                 </el-table-column>
                 <el-table-column prop="tag" label="难度">
                     <template v-slot="scope">
-                        <el-tag :type="scope.row.level === '简单' ? 'success' : (scope.level === '中等' ? 'warning' : 'danger')"
+                        <el-tag :type="scope.row.level === '简单' ? 'success' : (scope.row.level === '中等' ? 'warning' : 'danger')"
                                 effect="dark"
                                 disable-transitions>{{scope.row.level}}</el-tag>
                     </template>

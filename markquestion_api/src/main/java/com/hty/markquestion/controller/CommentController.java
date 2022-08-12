@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hty.markquestion.constant.ResponseMessage;
 import com.hty.markquestion.mapper.CommentMapper;
+import com.hty.markquestion.mapper.CommentReplyMapper;
 import com.hty.markquestion.pojo.Comment;
+import com.hty.markquestion.pojo.CommentReply;
 import com.hty.markquestion.pojo.vo.Response;
+import com.hty.markquestion.service.CommentReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,9 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private CommentReplyService commentReplyService;
 
 
     /***
@@ -65,17 +71,16 @@ public class CommentController {
 
 
     /***
-     * 获取某个评论的回复评论
+     * 获取某个评论的回复评论 使用的是新的实体类封装当前评论的回复评论，获取回复评论的时候
+     * 需要使用到递归，来不断获取回复评论的回复评论
      * @param id
      * @return
      */
     @GetMapping("/queryReplyCommentById")
     @ResponseBody
     public String queryReplyCommentById(@RequestParam("id") Integer id){
-        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("comment_id",id);
-        List<Comment> comments = commentMapper.selectList(queryWrapper);
-        Response response = new Response(ResponseMessage.SUCCESS, comments);
+        List<CommentReply> commentReplyList = commentReplyService.queryCommentReply(id);
+        Response response = new Response(ResponseMessage.SUCCESS, commentReplyList);
         return JSON.toJSONString(response);
     }
 }
