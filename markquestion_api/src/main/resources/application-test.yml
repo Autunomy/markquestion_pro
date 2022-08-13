@@ -1,6 +1,6 @@
 # 测试环境
 server:
-  port: 80
+  port: 8001
   servlet:
     context-path: /
 
@@ -14,12 +14,16 @@ mybatis-plus:
     db-config:
       logic-delete-value: 1
       logic-not-delete-value: 0
+  mapper-locations:
+    - classpath*:com/hty/markquestion/mapper/xml/*.xml
+  #配置实体类
+  typeAliasesPackage: com.hty.markquestion.pojo
 
 #配置数据源
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://10.10.10.141:3306/markquestion?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/markquestion?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
   #解决出现Failed to start bean ‘documentationPluginsBootstrapper’错误

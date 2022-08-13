@@ -76,7 +76,9 @@
                                             <el-avatar style="display: inline-block;" :size="40" :src="'http://www.autunomy.top/images/head/head.jpg'"/>
                                         </el-col>
                                         <!--显示作者-->
-                                        <h4 style="display: inline-block;margin-right: 20px">{{rcomment.username}} 回复 {{'Autunomy'}}</h4>
+                                        <h4 style="display: inline-block;margin-right: 20px">
+                                            {{rcomment.username}} <i class="el-icon-caret-right"></i> {{'Autunomy'}}
+                                        </h4>
                                         <!--显示评论日期-->
                                         <h4 style="display: inline-block;margin-right: 20px">{{rcomment.commentDate}}</h4>                            <!--显示作者-->
                                         <!--回复按钮-->

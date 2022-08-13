@@ -14,6 +14,10 @@ mybatis-plus:
     db-config:
       logic-delete-value: 1
       logic-not-delete-value: 0
+  mapper-locations:
+    - classpath*:com/hty/markquestion/mapper/xml/*.xml
+  #配置实体类
+  typeAliasesPackage: com.hty.markquestion.pojo
 
 #配置数据源
 spring:

@@ -12,10 +12,10 @@
             <el-menu-item index="/author">博主信息</el-menu-item>
             <el-menu-item index="/contest">比赛日程表</el-menu-item>
             <el-menu-item index="/friendLink">友链</el-menu-item>
-            <el-menu-item index="5">推荐</el-menu-item>
-            <el-menu-item index="6">语言基础练习</el-menu-item>
+            <el-menu-item index="/advice">推荐</el-menu-item>
             <el-menu-item index="/blog">博客</el-menu-item>
-            <el-menu-item index="7">工具</el-menu-item>
+            <el-menu-item index="/practice">语言基础练习</el-menu-item>
+            <el-menu-item index="/utils">工具</el-menu-item>
 
             <!--如果未登陆显示-->
             <el-menu-item

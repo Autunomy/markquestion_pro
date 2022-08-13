@@ -11,6 +11,10 @@ import contest from "@/views/contest/contest";
 import friendLinkList from "@/views/friend_link/friendLinkList";
 import blogIndex from "@/views/blog/index"
 import detail from "@/views/author/wrong_practice/detail";
+import adviceList from "@/views/advice/adviceList";
+import practiceList from "@/views/practice/practiceList";
+import utilsList from "@/views/utils/utilsList";
+import content from "@/views/blog/content";
 
 
 Vue.use(VueRouter)
@@ -76,6 +80,26 @@ let vueRouter =  new VueRouter({
         {
             path:"/blog",
             component:blogIndex
+        },
+        //推荐页面
+        {
+            path:"/advice",
+            component:adviceList
+        },
+        //练习页面
+        {
+            path:"/practice",
+            component:practiceList
+        },
+        //工具页面
+        {
+            path:"/utils",
+            component:utilsList
+        },
+        //博客展示页面
+        {
+            path:"/content",
+            component:content
         }
     ]
 })

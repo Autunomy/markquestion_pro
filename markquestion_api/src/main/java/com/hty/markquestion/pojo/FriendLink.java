@@ -25,6 +25,8 @@ public class FriendLink {
     private String tag;
     @ApiModelProperty("友链描述")
     private String description;
+    @ApiModelProperty("简介")
+    private String introduce;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("创建时间")
