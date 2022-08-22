@@ -1,9 +1,12 @@
 package com.hty.markquestion.controller.manage;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hty.markquestion.constant.ResponseMessage;
 import com.hty.markquestion.mapper.*;
 import com.hty.markquestion.mapper.QuestionMapper;
 import com.hty.markquestion.pojo.*;
+import com.hty.markquestion.pojo.vo.Response;
 import com.hty.markquestion.util.MarkDown2HtmlUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -11,16 +14,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -119,35 +124,35 @@ public class ManageQuestionController {
         return "manager/add/add_question";
     }
 
-    @PostMapping("/addQuestion")
-    @ApiOperation("添加一个题解")
-    public String addQuestion(@RequestParam("question_name") String question_name,
-                              @RequestParam("question_from") String question_from,
-                              @RequestParam("author") String author,
-                              @RequestParam("tag") String tag,
-                              @RequestParam("solution") String solution){
-        QueryWrapper<QuestionTag> wrapper = new QueryWrapper<>();
-        wrapper.eq("tag_name",tag);
-        QuestionTag questionTag = questionTagMapper.selectOne(wrapper);
-        //判断这个标签是否存在 不存在就创建和这个标签
-        if(questionTag == null){
-            QuestionTag newTag = new QuestionTag();
-            newTag.setTagName(tag);
-            questionTagMapper.insert(newTag);
-        }
-
-        Question question = new Question();
-        question.setSolution(solution);
-        question.setQuestionFrom(question_from);
-        question.setAuthor(author);
-        question.setQuestionName(question_name);
-        question.setTag(tag);
-        question.setUpdateTime(new Date());
-        question.setCreateTime(new Date());
-        questionMapper.insert(question);
-
-        return "redirect:/manage/question/showQuestion";
-    }
+//    @PostMapping("/addQuestion")
+//    @ApiOperation("添加一个题解")
+//    public String addQuestion(@RequestParam("question_name") String question_name,
+//                              @RequestParam("question_from") String question_from,
+//                              @RequestParam("author") String author,
+//                              @RequestParam("tag") String tag,
+//                              @RequestParam("solution") String solution){
+//        QueryWrapper<QuestionTag> wrapper = new QueryWrapper<>();
+//        wrapper.eq("tag_name",tag);
+//        QuestionTag questionTag = questionTagMapper.selectOne(wrapper);
+//        //判断这个标签是否存在 不存在就创建和这个标签
+//        if(questionTag == null){
+//            QuestionTag newTag = new QuestionTag();
+//            newTag.setTagName(tag);
+//            questionTagMapper.insert(newTag);
+//        }
+//
+//        Question question = new Question();
+//        question.setSolution(solution);
+//        question.setQuestionFrom(question_from);
+//        question.setAuthor(author);
+//        question.setQuestionName(question_name);
+//        question.setTag(tag);
+//        question.setUpdateTime(new Date());
+//        question.setCreateTime(new Date());
+//        questionMapper.insert(question);
+//
+//        return "redirect:/manage/question/showQuestion";
+//    }
 
     @ApiOperation("删除一个题解")
     @GetMapping("/deleteQuestion")
@@ -214,5 +219,7 @@ public class ManageQuestionController {
 
         return "redirect:/manage/question/showQuestion";
     }
+
+    //------------------------------------------------------------------------------------------------
 
 }

@@ -16,14 +16,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,12 +56,12 @@ public class QuestionController {
     //跳转到前台首页
     @ApiOperation("跳转到前台首页")
     @GetMapping("/index")
-    public String index(@ApiParam("视图")Model model) {
+    public String index(@ApiParam("视图") Model model) {
         //添加所有的题解
         List<Question> res = questionMapper.selectList(null);
 
         //将题解总数添加到视图中
-        model.addAttribute("questionNum",res.size());
+        model.addAttribute("questionNum", res.size());
 
         //由于要做分页，一页显示15个，所以首次查询只显示前15个
         List<Question> questions = res.subList(0, 15);
@@ -75,7 +78,7 @@ public class QuestionController {
         List<Contest> contests = new ArrayList<>();
         //只有未过期的比赛才显示 0表示未过期
         for (Contest contest : result) {
-            if(contest.getIsExpired() == 0){
+            if (contest.getIsExpired() == 0) {
                 contests.add(contest);
             }
         }
@@ -94,7 +97,7 @@ public class QuestionController {
 
         //显示网站基本信息
         WebBasicMessage webBasicMessage = webBasicMessageMapper.selectOne(null);
-        model.addAttribute("webBasicMessage",webBasicMessage);
+        model.addAttribute("webBasicMessage", webBasicMessage);
 
         return "index";
     }
@@ -109,7 +112,7 @@ public class QuestionController {
         Question question = questionMapper.selectOne(wrapper);
 
         //当前文章的访问量+1
-        question.setWatch(question.getWatch()+1);
+        question.setWatch(question.getWatch() + 1);
         //需要更新一下数据库
         questionMapper.updateById(question);
 
@@ -120,14 +123,14 @@ public class QuestionController {
 
         //搜索出作者信息
         QueryWrapper<AuthorMessage> wrapper2 = new QueryWrapper<>();
-        wrapper2.eq("username",question.getAuthor());
+        wrapper2.eq("username", question.getAuthor());
         AuthorMessage authorMessage = authorMessageMapper.selectOne(wrapper2);
 //        log.info(authorMessage.toString());
         model.addAttribute("authorMessage", authorMessage);
 
         //显示网站基本信息
         WebBasicMessage webBasicMessage = webBasicMessageMapper.selectOne(null);
-        model.addAttribute("webBasicMessage",webBasicMessage);
+        model.addAttribute("webBasicMessage", webBasicMessage);
 
         return "problems/show_problems";
     }
@@ -135,7 +138,7 @@ public class QuestionController {
     @ApiOperation("获取全部题目(AJAX请求)")
     @GetMapping("/getAllQuestion")
     @ResponseBody
-    public String getAllQuestion(){
+    public String getAllQuestion() {
         List<Question> questions = questionMapper.selectList(null);
         //分页需求
 //        List<Question> res = questions.subList(0, 15);
@@ -145,15 +148,15 @@ public class QuestionController {
     @ApiOperation("分页获取所有题目(AJAX请求)")
     @GetMapping("/getPageAllQuestion")
     @ResponseBody
-    public String getPageAllQuestion(@RequestParam("page") String page){
+    public String getPageAllQuestion(@RequestParam("page") String page) {
         //查出所有题目
         List<Question> res = questionMapper.selectList(null);
         //将页数转换为整型
         Integer num = Integer.valueOf(page);
         //获取子集合的结尾
-        int end = Math.min(res.size(),(num-1)*15+15);
+        int end = Math.min(res.size(), (num - 1) * 15 + 15);
         //获取当前页的题解
-        List<Question> questions = res.subList((num-1) * 15, end);
+        List<Question> questions = res.subList((num - 1) * 15, end);
         return JSON.toJSONString(questions);
     }
 
@@ -162,7 +165,7 @@ public class QuestionController {
     @ResponseBody
     public String getQuestionByPlatform(@RequestParam("platform") String platform) throws UnsupportedEncodingException {
         QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("question_from",platform);
+        queryWrapper.eq("question_from", platform);
         List<Question> questions = questionMapper.selectList(queryWrapper);
 
         String questionJson = JSON.toJSONString(questions);
@@ -173,9 +176,9 @@ public class QuestionController {
     @ApiOperation("根据题目来源查询题目(AJAX请求)")
     @GetMapping("/getQuestionByTag")
     @ResponseBody
-    public String getQuestionByTag(@RequestParam("tag") String tag){
+    public String getQuestionByTag(@RequestParam("tag") String tag) {
         QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("tag",tag);
+        queryWrapper.eq("tag", tag);
         List<Question> questions = questionMapper.selectList(queryWrapper);
 //        System.out.println(questions.toString());
         return JSON.toJSONString(questions);
@@ -184,16 +187,14 @@ public class QuestionController {
     @ApiOperation("根据搜索框查询题目(AJAX请求)")
     @GetMapping(value = "/getQuestionBySearch")
     @ResponseBody
-    public String getQuestionBySearch(@RequestParam("search") String search){
+    public String getQuestionBySearch(@RequestParam("search") String search) {
         QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
         //模糊查询
-        queryWrapper.like("question_name",search);
+        queryWrapper.like("question_name", search);
         List<Question> questions = questionMapper.selectList(queryWrapper);
 //        System.out.println(questions.toString());
         return JSON.toJSONString(questions);
     }
-
-
 
 
 //------------------------------------------------------------------------------------------------
@@ -207,7 +208,7 @@ public class QuestionController {
     @GetMapping("/queryQuestionPage")
     @ResponseBody
     public String queryQuestionPage(@RequestParam("currentPage") String currentPage,
-                                    @RequestParam("pageSize") String pageSize){
+                                    @RequestParam("pageSize") String pageSize) {
         Page<Question> page = new Page<>();
         page.setCurrent(Long.parseLong(currentPage));//设置当前页码
         page.setSize(Long.parseLong(pageSize));//设置页面大小
@@ -217,9 +218,9 @@ public class QuestionController {
         //总数据量
         Integer total = questionMapper.selectCount(null);
 
-        Response response = new Response(ResponseMessage.SUCCESS,questionList);
+        Response response = new Response(ResponseMessage.SUCCESS, questionList);
 
-        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage), Integer.valueOf(pageSize), total));
         return JSON.toJSONString(response);
     }
 
@@ -230,9 +231,9 @@ public class QuestionController {
      */
     @GetMapping("/queryQuestionById")
     @ResponseBody
-    public String queryQuestionById(@RequestParam("qid") String qid){
+    public String queryQuestionById(@RequestParam("qid") String qid) {
         Question question = questionMapper.selectById(Integer.valueOf(qid));
-        Response response = new Response(ResponseMessage.SUCCESS,question);
+        Response response = new Response(ResponseMessage.SUCCESS, question);
         return JSON.toJSONString(response);
     }
 
@@ -247,10 +248,10 @@ public class QuestionController {
     @ResponseBody
     public String queryQuestionByAuthor(@RequestParam("author") String author,
                                         @RequestParam("currentPage") String currentPage,
-                                        @RequestParam("pageSize") String pageSize){
+                                        @RequestParam("pageSize") String pageSize) {
         //设置查询条件
         QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("author",author);
+        queryWrapper.eq("author", author);
         //设置分页数据
         Page<Question> page = new Page<>();
         page.setCurrent(Long.parseLong(currentPage));//设置当前页码
@@ -260,29 +261,12 @@ public class QuestionController {
         //获取当前作者的题解数量
         Integer total = questionMapper.selectCount(queryWrapper);
         //封装
-        Response response = new Response(ResponseMessage.SUCCESS,questionList);
+        Response response = new Response(ResponseMessage.SUCCESS, questionList);
         //设置分页信息
-        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage), Integer.valueOf(pageSize), total));
         return JSON.toJSONString(response);
     }
 
-    //图片上传
-    @PostMapping("/uploadPic")
-    @ResponseBody
-    public String uploadPic(@RequestParam("image") MultipartFile image) throws IOException {
-        String filename = "";
-        if (!image.isEmpty()) {
-            //获取文件名
-            String imageName = image.getOriginalFilename();
-            //获取后缀
-            String last = imageName.substring(imageName.lastIndexOf('.'));
-            //生成文件名
-            filename = UUID.randomUUID().toString().replace('-','x');
-            filename += last;
-            image.transferTo(new File("E:\\images\\blog\\"+filename));
-        }
-        return "http://localhost:8080/images/blog/"+filename;
-    }
 
     /***
      * 将题解浏览量+1
@@ -291,9 +275,9 @@ public class QuestionController {
      */
     @GetMapping("/addWatch")
     @ResponseBody
-    public String addWatch(@RequestParam("id") String id){
+    public String addWatch(@RequestParam("id") String id) {
         Question question = questionMapper.selectById(Integer.valueOf(id));
-        question.setWatch(question.getWatch()+1);
+        question.setWatch(question.getWatch() + 1);
         questionMapper.updateById(question);
         Response response = new Response(ResponseMessage.SUCCESS);
         return JSON.toJSONString(response);
@@ -308,12 +292,113 @@ public class QuestionController {
     @ResponseBody
     public String searchQuestion(@RequestParam("search") String search,
                                  @RequestParam("currentPage") String currentPage,
-                                 @RequestParam("pageSize") String pageSize){
-        List<Question> questionList = questionMapper.searchQuestion(search,Integer.parseInt(currentPage)-1,Integer.valueOf(pageSize));
+                                 @RequestParam("pageSize") String pageSize) {
+        List<Question> questionList = questionMapper.searchQuestion(search, Integer.parseInt(currentPage) - 1, Integer.valueOf(pageSize));
         //获取搜索出来的条数 用来分页
         Integer total = questionMapper.searchCount(search);
-        Response response = new Response(ResponseMessage.SUCCESS,questionList);
-        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
+        Response response = new Response(ResponseMessage.SUCCESS, questionList);
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage), Integer.valueOf(pageSize), total));
         return JSON.toJSONString(response);
     }
+
+    //图片上传
+    @PostMapping("/uploadPic")
+    public String uploadPic(@RequestParam("image") MultipartFile image) throws IOException {
+        String filename = "";
+        if (!image.isEmpty()) {
+            //获取文件名
+            String imageName = image.getOriginalFilename();
+            //获取后缀
+            String last = imageName.substring(imageName.lastIndexOf('.'));
+            //生成文件名
+            filename = UUID.randomUUID().toString().replace('-', 'x');
+            filename += last;
+            image.transferTo(new File("E:\\images\\blog\\" + filename));
+        }
+        return "http://localhost:8080/images/blog/" + filename;
+    }
+
+    @GetMapping("/delPic")
+    public String delPic(String path) {
+        path = path.substring(path.lastIndexOf("/") + 1);
+        Response response = null;
+        boolean isSuccess = FileSystemUtils.deleteRecursively(new File("E:/images/blog/" + path));
+        if (isSuccess) {
+            response = new Response(ResponseMessage.SUCCESS, null);
+        } else {
+            response = new Response(ResponseMessage.LOGIN_FAIL, null);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    @GetMapping("/getQuestionFrom")
+    @ResponseBody
+    public String getQuestionFrom() {
+        List<Platform> platforms = platformMapper.selectList(null);
+        Response response = new Response(ResponseMessage.SUCCESS, platforms);
+        return JSON.toJSONString(response);
+    }
+
+    @PostMapping("/addQuestion")
+    @ResponseBody
+    public String addBlog(String questionName,
+                          String solution,
+                          String questionFrom,
+                          String author,
+                          String tag,
+                          String level,
+                          String link) {
+        Question question = new Question();
+        question.setQuestionName(questionName);
+        question.setSolution(solution);
+        question.setQuestionFrom(questionFrom);
+        question.setAuthor(author);
+        question.setTag(tag);
+        question.setLevel(level);
+        question.setLink(link);
+        question.setWatch(0);
+        question.setCreateTime(new Date());
+        question.setUpdateTime(new Date());
+        Response response = null;
+
+        int rows = questionMapper.insert(question);
+        if (rows == 1) {
+            response = new Response(ResponseMessage.SUCCESS, null);
+        } else {
+            response = new Response(ResponseMessage.ERROR, null);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    @PostMapping("/updateQuestion")
+    @ResponseBody
+    public String updateQuestion(Integer id,
+                                 String questionName,
+                                 String solution,
+                                 String questionFrom,
+                                 String author,
+                                 String tag,
+                                 String level,
+                                 String link) throws ParseException {
+
+        Question question = questionMapper.selectById(id);
+        question.setSolution(solution);
+        question.setQuestionFrom(questionFrom);
+        question.setAuthor(author);
+        question.setQuestionName(questionName);
+        question.setTag(tag);
+        question.setUpdateTime(new Date());
+        question.setLevel(level);
+        question.setLink(link);
+        int rows = questionMapper.updateById(question);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS,null);
+        }else{
+            response = new Response(ResponseMessage.ERROR,null);
+        }
+
+        return JSON.toJSONString(response);
+    }
+
 }

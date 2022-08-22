@@ -12,8 +12,15 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+import Highlight from './utils/highlight'
+
 import '@/icons' // icon
 import '@/permission' // permission control
+
+Vue.use(mavonEditor) //markdown编辑器支持图片上传
+Vue.use(Highlight) //代码高亮
 
 /**
  * If you don't want to use mock-server
@@ -23,15 +30,15 @@ import '@/permission' // permission control
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

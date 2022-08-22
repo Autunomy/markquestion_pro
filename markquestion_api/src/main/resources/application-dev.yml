@@ -16,8 +16,6 @@ server:
 
 #配置日志 使用控制台输出
 mybatis-plus:
-  #  configuration:
-  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   #配置逻辑删除  已经删除了置为1  未删除置为0
   global-config:
     db-config:
@@ -28,6 +26,8 @@ mybatis-plus:
     - classpath*:com/hty/markquestion/mapper/xml/*.xml
   #配置实体类
   typeAliasesPackage: com.hty.markquestion.pojo
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #配置数据源
 spring:

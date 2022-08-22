@@ -1,29 +1,28 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar"/>
 
-    <breadcrumb class="breadcrumb-container" />
+    <breadcrumb class="breadcrumb-container"/>
 
     <div class="right-menu">
+      <span style="display: inline-block;font-size: 20px;margin-right: 10px;">{{username}}</span>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <!--          <img :src="avatar+''" class="user-avatar">-->
+          <img
+            :src="avatar"
+            class="user-avatar">
+          <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
+
           <router-link to="/">
             <el-dropdown-item>
-              Home
+              主页
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">注销</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -32,27 +31,43 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import {removeToken,getToken} from "@/utils/auth";
+import userApi from "@/api/user"
+import qs from "qs";
 
 export default {
+  data(){
+    return {
+      username:"",
+      avatar:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201808%2F24%2F20180824152205_jwNBi.thumb.1000_0.gif&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1661655256&t=05fdd1665bac6d59344bc595e214238e"
+    }
+  },
   components: {
     Breadcrumb,
     Hamburger
   },
   computed: {
     ...mapGetters([
-      'sidebar',
-      'avatar'
+      'sidebar'
     ])
+  },
+  mounted() {
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
+      // await this.$store.dispatch('user/logout')
+      removeToken()
+      this.$message.success({
+        message: "注销成功",
+        duration: 1000
+      });
+      //注销后，如果登陆后需要跳转到上次登陆页面，就需要这么写
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
@@ -65,7 +80,7 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 
   .hamburger-container {
     line-height: 46px;
@@ -73,7 +88,7 @@ export default {
     float: left;
     cursor: pointer;
     transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
       background: rgba(0, 0, 0, .025)
@@ -88,6 +103,17 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+
+    span{
+      //background-color: pink;
+      display: inline-block;
+      height: 100%;
+      vertical-align: top;
+      margin-right: 10px;
+      font-size: 18px;
+      letter-spacing: 0.8px;
+      color: #666;
+    }
 
     &:focus {
       outline: none;
