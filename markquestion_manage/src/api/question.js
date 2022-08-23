@@ -33,6 +33,17 @@ export default {
       method:"POST",
       data
     })
+  },
+  deleteQuestionById(id){
+    return request({
+      url:"/question/deleteQuestionById?id="+id,
+      method:"GET"
+    })
+  },
+  searchQuestion(search) {
+    return request({
+      url:"/question/searchQuestion?"+search,
+      method:"GET"
+    })
   }
-
 }

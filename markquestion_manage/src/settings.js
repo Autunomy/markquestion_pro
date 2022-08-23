@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '图书管理系统',
+  title: 'markquestion后台',
 
   /**
    * @type {boolean} true | false

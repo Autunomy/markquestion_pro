@@ -110,16 +110,17 @@ export default {
             //搜索条件为空表示搜索全部信息
             if(this.search !== "" && this.search !== null){
                 //搜索条件
+                this.pageInfo.currentPage = 1
                 let data = "search=" + this.search + "&" + qs.stringify(this.pageInfo);
                 questionApi.searchQuestion(data).then(resp => {
                     let data = resp.data;
                     if(data.code === 200){
-                        this.pageInfo.currentPage = 1;
                         this.questionTable = data.data;
                         this.pageInfo = data.pageInfo;
                     }
                 })
             }else{
+                this.pageInfo.currentPage = 1;
                 this.queryQuestionPage();
             }
         },

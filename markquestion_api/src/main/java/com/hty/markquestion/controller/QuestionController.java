@@ -318,6 +318,7 @@ public class QuestionController {
         return "http://localhost:8080/images/blog/" + filename;
     }
 
+    //删除图片
     @GetMapping("/delPic")
     public String delPic(String path) {
         path = path.substring(path.lastIndexOf("/") + 1);
@@ -331,6 +332,11 @@ public class QuestionController {
         return JSON.toJSONString(response);
     }
 
+
+    /***
+     * 获取全部的题解来源
+     * @return
+     */
     @GetMapping("/getQuestionFrom")
     @ResponseBody
     public String getQuestionFrom() {
@@ -339,6 +345,17 @@ public class QuestionController {
         return JSON.toJSONString(response);
     }
 
+    /***
+     * 添加题解
+     * @param questionName
+     * @param solution
+     * @param questionFrom
+     * @param author
+     * @param tag
+     * @param level
+     * @param link
+     * @return
+     */
     @PostMapping("/addQuestion")
     @ResponseBody
     public String addBlog(String questionName,
@@ -370,6 +387,19 @@ public class QuestionController {
         return JSON.toJSONString(response);
     }
 
+    /***
+     * 修改题解
+     * @param id
+     * @param questionName
+     * @param solution
+     * @param questionFrom
+     * @param author
+     * @param tag
+     * @param level
+     * @param link
+     * @return
+     * @throws ParseException
+     */
     @PostMapping("/updateQuestion")
     @ResponseBody
     public String updateQuestion(Integer id,
@@ -401,4 +431,16 @@ public class QuestionController {
         return JSON.toJSONString(response);
     }
 
+    @RequestMapping("/deleteQuestionById")
+    @ResponseBody
+    public String deleteQuestionById(Integer id){
+        int rows = questionMapper.deleteById(id);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS,null);
+        }else{
+            response = new Response(ResponseMessage.ERROR,null);
+        }
+        return JSON.toJSONString(response);
+    }
 }
