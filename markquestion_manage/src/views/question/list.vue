@@ -9,19 +9,6 @@
       <el-form-item>
         <el-button style="margin-left: 20px" type="primary" @click="searchQuestion">搜索</el-button>
       </el-form-item>
-<!--      <el-form-item label="题目来源">-->
-<!--        <el-select v-model="searchCondition.platform" placeholder="题目来源">-->
-<!--          <el-option label="力扣(leetcode)" value="力扣(leetcode)"></el-option>-->
-<!--          <el-option label="ACWing" value="ACWing"></el-option>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="难度">-->
-<!--        <el-select v-model="searchCondition.level" placeholder="难度">-->
-<!--          <el-option label="简单" value="简单"></el-option>-->
-<!--          <el-option label="中等" value="中等"></el-option>-->
-<!--          <el-option label="困难" value="困难"></el-option>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
       <el-button style="margin-left: 20px" type="info" @click="cleanSearch">清空搜索条件</el-button>
     </el-form>
   </div>
@@ -199,7 +186,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        //点击了确定按钮 那么就删除当前院系
         questionApi.deleteQuestionById(data.id).then(resp => {
           if (resp.code === 200) {
             this.$message.success({
@@ -234,8 +220,12 @@ export default {
     handleCurrentPage(currentPage) {
       //更新当前页码
       this.pageInfo.currentPage = currentPage
-      //访问服务器数据
-      this.queryQuestionPage()
+      if(this.searchCondition !== "" && this.searchCondition !== null){
+        this.searchQuestion();
+      }else{
+        //访问服务器数据
+        this.queryQuestionPage()
+      }
     },
     //修改题解 跳转到题解修改页面
     updateQuestion(data){
@@ -312,8 +302,10 @@ export default {
     searchQuestion(){
       //搜索条件为空表示搜索全部信息
       if(this.searchCondition !== "" && this.searchCondition !== null){
+        if((this.pageInfo.total / this.pageInfo.pageSize) + 1 < this.pageInfo.currentPage){
+          this.pageInfo.currentPage = 1
+        }
         //搜索条件
-        this.pageInfo.currentPage = 1
         let data = "search=" + this.searchCondition + "&" + qs.stringify(this.pageInfo);
         questionApi.searchQuestion(data).then(resp => {
           if(resp.code === 200){

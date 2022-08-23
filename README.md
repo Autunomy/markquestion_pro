@@ -9,6 +9,18 @@ friendLink表添加一个字段  简介  introduce
 新建表blog博客表
 新建表blog_comment博客评论表
 新建表blog_class博客分类表
+
+question表添加索引
+alter table question
+    add fulltext ftk_question_name (question_name) with parser ngram;
+alter table question
+    add fulltext ftk_question_from (question_from) with parser ngram;
+alter table question
+    add fulltext ftk_author (author) with parser ngram;
+    
+    
+message_board表添加索引
+alter table message_board add fulltext ftk_message(message) with parser ngram;
 ```
 
 创建blog文件夹

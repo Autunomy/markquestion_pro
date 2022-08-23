@@ -293,7 +293,7 @@ public class QuestionController {
     public String searchQuestion(@RequestParam("search") String search,
                                  @RequestParam("currentPage") String currentPage,
                                  @RequestParam("pageSize") String pageSize) {
-        List<Question> questionList = questionMapper.searchQuestion(search, Integer.parseInt(currentPage) - 1, Integer.valueOf(pageSize));
+        List<Question> questionList = questionMapper.searchQuestion(search, (Integer.parseInt(currentPage) - 1) * Integer.parseInt(pageSize), Integer.valueOf(pageSize));
         //获取搜索出来的条数 用来分页
         Integer total = questionMapper.searchCount(search);
         Response response = new Response(ResponseMessage.SUCCESS, questionList);

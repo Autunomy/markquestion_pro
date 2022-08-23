@@ -10,16 +10,13 @@ import com.hty.markquestion.pojo.vo.PageInfo;
 import com.hty.markquestion.pojo.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/messageBoard")
 public class MessageBoardController {
 
@@ -29,7 +26,6 @@ public class MessageBoardController {
 
     //保存留言
     @PostMapping("/saveMessage")
-    @ResponseBody
     public String saveMessage(@RequestParam("message") String message){
         MessageBoard messageBoard = new MessageBoard();
         messageBoard.setMessage(message);
@@ -41,7 +37,6 @@ public class MessageBoardController {
 
     //分页获取留言，第一页是最近的留言
     @PostMapping("/queryMessageBoard")
-    @ResponseBody
     public String queryMessageBoard(@RequestParam("currentPage") String currentPage,
                                     @RequestParam("pageSize") String pageSize){
         QueryWrapper<MessageBoard> queryWrapper = new QueryWrapper<>();
@@ -56,4 +51,35 @@ public class MessageBoardController {
         response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
         return JSON.toJSONString(response);
     }
+
+    @GetMapping("/deleteMessage")
+    public String deleteMessage(Integer id){
+        int rows = messageBoardMapper.deleteById(id);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS,null);
+        }else{
+            response = new Response(ResponseMessage.ERROR,null);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    @PostMapping("/searchMessage")
+    public String searchMessage(@RequestParam("search") String search,
+                                @RequestParam("currentPage") String currentPage,
+                                @RequestParam("pageSize") String pageSize){
+        QueryWrapper<MessageBoard> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("message",search);
+        queryWrapper.orderByDesc("create_date");
+        Page<MessageBoard> page = new Page<>();
+        page.setCurrent(Long.parseLong(currentPage));
+        page.setSize(Long.parseLong(pageSize));
+        //查询
+        List<MessageBoard> messageList = messageBoardMapper.selectPage(page, queryWrapper).getRecords();
+        Integer total = messageBoardMapper.selectCount(queryWrapper);
+        Response response = new Response(ResponseMessage.SUCCESS, messageList);
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
+        return JSON.toJSONString(response);
+    }
+
 }

@@ -54,12 +54,11 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: {title: '首页', icon: 'dashboard'}
+      meta: {title: '首页日志', icon: 'dashboard'}
     }]
   },
 
   {
-    //院系管理
     path: '/question',
     component: Layout,
     redirect: '/question/list',
@@ -87,9 +86,139 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/author',
+    component: Layout,
+    redirect: '/author/messageBoard',
+    name: 'author',
+    meta: {title: '博主信息管理', icon: 'el-icon-film'},
+    children: [
+      {
+        path: 'messageBoard',
+        name: 'messageBoard',
+        component: () => import('@/views/author/messageBoard'),
+        meta: {title: '留言列表', icon: 'el-icon-document'}
+      },
+      {
+        path: 'authorMessage',
+        name: 'authorMessage',
+        component: () => import('@/views/author/authorMessage'),
+        meta: {title: '博主信息管理', icon: 'el-icon-document'}
+      },
+      {
+        path: 'wrongAnswer',
+        name: 'wrongAnswer',
+        component: () => import('@/views/author/wrongAnswer'),
+        meta: {title: '错题管理', icon: 'el-icon-document'}
+      }
+    ]
+  },
+  {
+    path: '/contest',
+    component: Layout,
+    redirect: '/contest/contestList',
+    name: 'contest',
+    meta: {title: '比赛日程管理', icon: 'el-icon-film'},
+    children: [
+      {
+        path: 'contestList',
+        name: 'contestList',
+        component: () => import('@/views/contest/contestList'),
+        meta: {title: '比赛列表', icon: 'el-icon-document'}
+      },
+      {
+        path: 'addContest',
+        name: 'addContest',
+        component: () => import('@/views/contest/addContest'),
+        meta: {title: '添加比赛', icon: 'el-icon-document'}
+      }
+    ]
+  },
+  {
+    path: '/friendLink',
+    component: Layout,
+    redirect: '/friendLink/list',
+    name: 'contest',
+    meta: {title: '友链管理', icon: 'el-icon-film'},
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/friendLink/list'),
+        meta: {title: '友链列表', icon: 'el-icon-document'}
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/friendLink/add'),
+        meta: {title: '添加友链', icon: 'el-icon-document'}
+      }
+    ]
+  },
+  {
+    path: '/advice',
+    component: Layout,
+    redirect: '/friendLink/list',
+    name: 'advice',
+    meta: {title: '推荐管理', icon: 'el-icon-film'},
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/advice/list'),
+        meta: {title: '推荐列表', icon: 'el-icon-document'}
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/advice/add'),
+        meta: {title: '添加推荐', icon: 'el-icon-document'}
+      }
+    ]
+  },
 
-
-
+  {
+    path: '/blog',
+    component: Layout,
+    redirect: '/blog/list',
+    name: 'blog',
+    meta: {title: '博客管理', icon: 'el-icon-film'},
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/blog/list'),
+        meta: {title: '博客列表', icon: 'el-icon-document'}
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/blog/add'),
+        meta: {title: '博客推荐', icon: 'el-icon-document'}
+      }
+    ]
+  },
+  {
+    path: '/practice',
+    component: Layout,
+    redirect: '/practice/list',
+    name: 'practice',
+    meta: {title: '练习管理', icon: 'el-icon-film'},
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/practice/list'),
+        meta: {title: '练习列表', icon: 'el-icon-document'}
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/practice/add'),
+        meta: {title: '练习推荐', icon: 'el-icon-document'}
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   {path: '*', redirect: '/404', hidden: true}
 ]
