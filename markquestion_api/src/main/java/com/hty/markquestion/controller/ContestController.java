@@ -2,22 +2,23 @@ package com.hty.markquestion.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hty.markquestion.constant.ResponseMessage;
 import com.hty.markquestion.mapper.ContestMapper;
 import com.hty.markquestion.mapper.WebBasicMessageMapper;
 import com.hty.markquestion.pojo.Contest;
 import com.hty.markquestion.pojo.WebBasicMessage;
+import com.hty.markquestion.pojo.vo.PageInfo;
 import com.hty.markquestion.pojo.vo.Response;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -99,4 +100,56 @@ public class ContestController {
         return JSON.toJSONString(response);
     }
 
+    @PostMapping("/queryContestPage")
+    @ResponseBody
+    public String queryContestPage(String currentPage,String pageSize){
+        Page<Contest> page = new Page<>();
+        page.setCurrent(Long.parseLong(currentPage));
+        page.setSize(Long.parseLong(pageSize));
+
+        QueryWrapper<Contest> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("contest_time");
+
+        List<Contest> contestList = contestMapper.selectPage(page, queryWrapper).getRecords();
+
+        Integer total = contestMapper.selectCount(null);
+
+        Response response = new Response(ResponseMessage.SUCCESS,contestList);
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
+        return JSON.toJSONString(response);
+    }
+
+    @GetMapping("/deleteContestById")
+    @ResponseBody
+    public String deleteContestById(Integer id){
+        int rows = contestMapper.deleteById(id);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS,null);
+        }else{
+            response = new Response(ResponseMessage.ERROR,null);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    @PostMapping("/addContest")
+    @ResponseBody
+    public String addContest(String contestName,String contestTime,String platform,String link) throws ParseException {
+        Contest contest = new Contest();
+        contest.setContestName(contestName);
+        contest.setContestTime(new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(contestTime).getTime()));
+        contest.setPlatform(platform);
+        contest.setLink(link);
+
+        int rows = contestMapper.insert(contest);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS,null);
+        }else{
+            response = new Response(ResponseMessage.ERROR,null);
+        }
+
+        return JSON.toJSONString(response);
+
+    }
 }
