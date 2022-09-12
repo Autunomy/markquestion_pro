@@ -152,6 +152,12 @@ export const constantRoutes = [
         name: 'add',
         component: () => import('@/views/friendLink/add'),
         meta: {title: '添加友链'}
+      },
+      {
+        path: 'tagList',
+        name: 'tagList',
+        component: () => import('@/views/friendLink/tagList'),
+        meta: {title: '友链标签管理'}
       }
     ]
   },

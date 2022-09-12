@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hty.markquestion.constant.ResponseMessage;
 import com.hty.markquestion.mapper.FriendLinkMapper;
+import com.hty.markquestion.mapper.FriendLinkTagMapper;
 import com.hty.markquestion.mapper.WebBasicMessageMapper;
 import com.hty.markquestion.pojo.Contest;
 import com.hty.markquestion.pojo.FriendLink;
+import com.hty.markquestion.pojo.FriendLinkTag;
 import com.hty.markquestion.pojo.WebBasicMessage;
 import com.hty.markquestion.pojo.vo.PageInfo;
 import com.hty.markquestion.pojo.vo.Response;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 //友链controller
@@ -30,6 +33,9 @@ import java.util.List;
 public class FriendLinkController {
     @Autowired
     FriendLinkMapper friendLinkMapper;
+
+    @Autowired
+    FriendLinkTagMapper friendLinkTagMapper;
 
     @Autowired
     WebBasicMessageMapper webBasicMessageMapper;
@@ -48,6 +54,13 @@ public class FriendLinkController {
     }
 
     //--------------------------------------------------------------------------------------
+
+    /***
+     * 该方法是分页版本的查询
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
     @PostMapping("/queryFriendLinkList")
     @ResponseBody
     public String queryFriendLinkList(String currentPage,String pageSize){
@@ -65,4 +78,87 @@ public class FriendLinkController {
         response.setPageInfo(new PageInfo(Integer.valueOf(currentPage),Integer.valueOf(pageSize),total));
         return JSON.toJSONString(response);
     }
+
+    /***
+     * 该方法是不分页版本的查询
+     * @return
+     */
+    @GetMapping("/getFriendLink")
+    @ResponseBody
+    public String getFriendLink(){
+        List<FriendLink> friendLinkList = friendLinkMapper.selectList(null);
+        Response response = new Response(ResponseMessage.SUCCESS,friendLinkList);
+        return JSON.toJSONString(response);
+    }
+
+    /***
+     * 获取全部的友链标签
+     * @return
+     */
+    @GetMapping("/queryFriendLinkTag")
+    @ResponseBody
+    public String queryFriendLinkTag(){
+        List<FriendLinkTag> friendLinkList = friendLinkTagMapper.selectList(null);
+        Response response = new Response(ResponseMessage.SUCCESS,friendLinkList);
+        return JSON.toJSONString(response);
+    }
+
+    /***
+     * 添加一个友链
+     * @param linkName
+     * @param tag
+     * @param link
+     * @param introduce
+     * @param description
+     * @return
+     */
+    @PostMapping("/addFriendLink")
+    @ResponseBody
+    public String addFriendLink(String linkName,String tag,String link,String introduce,String description){
+        Response response = null;
+        FriendLink friendLink = new FriendLink();
+        friendLink.setLinkName(linkName);
+        friendLink.setLink(link);
+        friendLink.setTag(tag);
+        friendLink.setIntroduce(introduce);
+        friendLink.setDescription(description);
+        friendLink.setCreateTime(new Date());
+        friendLink.setUpdateTime(new Date());
+        int rows = friendLinkMapper.insert(friendLink);
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    /***
+     * 添加一个友链标签
+     * @param name
+     * @return
+     */
+    @PostMapping("/addFriendLinkTag")
+    @ResponseBody
+    public String addFriendLinkTag(String name){
+        Response response = null;
+        FriendLinkTag friendLinkTag = new FriendLinkTag();
+        friendLinkTag.setName(name);
+        friendLinkTag.setCreateTime(new Date());
+        friendLinkTag.setUpdateTime(new Date());
+        int rows = friendLinkTagMapper.insert(friendLinkTag);
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
+    }
+
+
+//    @GetMapping("/searchFriendLinkByName")
+//    @ResponseBody
+//    public String searchFriendLinkByName(String name){
+//
+//    }
 }

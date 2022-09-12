@@ -15,7 +15,7 @@
                        </div>
                     </template>
                     <div style="font-size: 18px">
-                        链接地址: <a :href="friendLink.link">点我跳转</a> <br>
+                        链接地址: <a target="_blank" :href="friendLink.link">点我跳转</a> <br>
                         <div style="border: 1px solid #c4ccc4;width: 100%;height: 100%;padding: 5px;border-radius: 5px">
                             <div v-highlight>
                                 <div v-html="friendLink.description"></div>

@@ -3,7 +3,7 @@ import request from "@/utils/request";
 export default {
     queryFriendLinkList(){
         return request({
-            url:"/friendLink/queryFriendLinkList",
+            url:"/friendLink/getFriendLink",
             type:"GET"
         })
     }

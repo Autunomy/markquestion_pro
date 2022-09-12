@@ -8,5 +8,31 @@ export default {
       data
     })
   },
+  addFriendLink(data){
+    return request({
+      url:"/friendLink/addFriendLink",
+      method:"POST",
+      data
+    })
+  },
+  queryFriendLinkTag(){
+    return request({
+      url:"/friendLink/queryFriendLinkTag",
+      method:"GET"
+    })
+  },
+  addFriendLinkTag(data){
+    return request({
+      url:"/friendLink/addFriendLinkTag",
+      method:"POST",
+      data
+    })
+  },
+  searchFriendLinkByName(name){
+    return request({
+      url:"/friendLink/searchFriendLinkByName?name="+name,
+      method:"GET"
+    })
+  }
 }
 

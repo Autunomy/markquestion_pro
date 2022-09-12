@@ -1,9 +1,23 @@
 <template>
   <div>
+    <!--搜索框-->
+    <div style="width: 100%;padding-top: 20px;">
+      <el-form style="width: 100%" :inline="true" class="demo-form-inline">
+        <el-form-item style="width: 400px;">
+          <el-input style="width: 400px;margin-left:20px;" v-model="searchCondition"
+                    placeholder="根据名称搜索"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button style="margin-left: 20px" type="primary" @click="searchFriendLink">搜索</el-button>
+        </el-form-item>
+        <el-button style="margin-left: 20px" type="info" @click="cleanSearch">清空搜索条件</el-button>
+      </el-form>
+    </div>
+
     <el-table
       :data="friendLinkList"
       border
-      style="width: 100%;">
+      style="width: 100%">
       <el-table-column
         fixed
         prop="linkName"
@@ -14,7 +28,7 @@
         label="链接"
         min-width="300px">
         <template v-slot="scope">
-          <a :href="scope.row.link">{{scope.row.link}}</a>
+          <a :href="scope.row.link">{{ scope.row.link }}</a>
         </template>
       </el-table-column>
       <el-table-column
@@ -78,7 +92,8 @@ export default {
         pageSize: 10,
         total: 0
       },
-      friendLinkList: []
+      friendLinkList: [],
+      searchCondition:""
     }
   },
   mounted() {
@@ -87,25 +102,36 @@ export default {
   methods: {
     queryAllLink() {
       friendLinkApi.queryAllLink(qs.stringify(this.pageInfo)).then(resp => {
-        if(resp.code === 200){
+        if (resp.code === 200) {
           this.pageInfo = resp.pageInfo
           this.friendLinkList = resp.data;
           this.friendLinkList.forEach(link => {
             link.createTime = dateFormat.dateFormat(new Date(link.createTime))
             link.updateTime = dateFormat.dateFormat(new Date(link.updateTime))
-            if(link.description.length > 20){
-              link.description = link.description.substring(0,19);
+            if (link.description.length > 20) {
+              link.description = link.description.substring(0, 19);
               link.description += "...";
             }
           })
         }
       })
     },
-    handleCurrentPage(){
+    handleCurrentPage() {
 
     },
-    updateFriendLink(){},
-    deleteFriendLink(){}
+    updateFriendLink() {
+    },
+    deleteFriendLink() {
+    },
+    searchFriendLink(){
+      friendLinkApi.searchFriendLinkByName(this.searchCondition).then(resp => {
+        console.log(resp)
+      })
+    },
+    cleanSearch(){
+      this.searchCondition = "";
+      this.queryAllLink();
+    }
   }
 }
 </script>
