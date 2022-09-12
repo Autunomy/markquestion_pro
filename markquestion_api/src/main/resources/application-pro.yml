@@ -1,9 +1,10 @@
 # 生产
 server:
-  port: 8080
+  port: 8001
   servlet:
     context-path: /
-
+    session:
+      timeout: 86400 # 设置的是24小时
 #配置日志 使用控制台输出
 mybatis-plus:
   #  configuration:
@@ -23,9 +24,9 @@ mybatis-plus:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.107.113.111:3306/markquestion?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://180.76.97.59:3306/markquestion?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: hty15336132318
+    password: 123456
   #解决出现Failed to start bean ‘documentationPluginsBootstrapper’错误
   mvc:
     pathmatch:
@@ -38,6 +39,18 @@ spring:
     user:
       name: 1156388927
       password: 15336132318
+  #配置邮件
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    username: 1156388927@qq.com
+    password: ojuwpdxmjolabagg #授权码
+    properties: #安全配置
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
   servlet:
     # 设置文件上传大小
     multipart:

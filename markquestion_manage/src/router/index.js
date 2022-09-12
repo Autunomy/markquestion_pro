@@ -54,7 +54,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: {title: '首页日志', icon: 'dashboard'}
+      meta: {title: '首页日志', icon: 'el-icon-notebook-2'}
     }]
   },
 
@@ -63,25 +63,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/question/list',
     name: 'question',
-    meta: {title: '题解管理', icon: 'el-icon-film'},
+    meta: {title: '题解管理', icon: 'el-icon-s-opportunity\n'},
     children: [
       {
         path: 'list',
         name: 'questionList',
         component: () => import('@/views/question/list'),
-        meta: {title: '题解列表', icon: 'el-icon-document'}
+        meta: {title: '题解列表'}
       },
       {
         path: 'addQuestion',
         name: 'addQuestion',
         component: () => import('@/views/question/addQuestion'),
-        meta: {title: '添加题解', icon: 'el-icon-news'}
+        meta: {title: '添加题解'}
       },
       {
         path: 'updateQuestion',
         name: 'updateQuestion',
         component: () => import('@/views/question/updateQuestion'),
-        meta: {title: '修改题解', icon: 'el-icon-news'}
+        meta: {title: '修改题解'}
       }
     ]
   },
@@ -91,25 +91,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/author/messageBoard',
     name: 'author',
-    meta: {title: '博主信息管理', icon: 'el-icon-film'},
+    meta: {title: '博主信息管理', icon: 'el-icon-user-solid'},
     children: [
       {
         path: 'messageBoard',
         name: 'messageBoard',
         component: () => import('@/views/author/messageBoard'),
-        meta: {title: '留言列表', icon: 'el-icon-document'}
+        meta: {title: '留言列表'}
       },
       {
         path: 'authorMessage',
         name: 'authorMessage',
         component: () => import('@/views/author/authorMessage'),
-        meta: {title: '博主信息管理', icon: 'el-icon-document'}
+        meta: {title: '博主信息管理'}
       },
       {
         path: 'wrongAnswer',
         name: 'wrongAnswer',
         component: () => import('@/views/author/wrongAnswer'),
-        meta: {title: '错题管理', icon: 'el-icon-document'}
+        meta: {title: '错题管理'}
       }
     ]
   },
@@ -118,19 +118,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/contest/contestList',
     name: 'contest',
-    meta: {title: '比赛日程管理', icon: 'el-icon-film'},
+    meta: {title: '比赛日程管理', icon: 'el-icon-date'},
     children: [
       {
         path: 'contestList',
         name: 'contestList',
         component: () => import('@/views/contest/contestList'),
-        meta: {title: '比赛列表', icon: 'el-icon-document'}
+        meta: {title: '比赛列表'}
       },
       {
         path: 'addContest',
         name: 'addContest',
         component: () => import('@/views/contest/addContest'),
-        meta: {title: '添加比赛', icon: 'el-icon-document'}
+        meta: {title: '添加比赛'}
       }
     ]
   },
@@ -139,19 +139,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/friendLink/list',
     name: 'contest',
-    meta: {title: '友链管理', icon: 'el-icon-film'},
+    meta: {title: '友链管理',icon: 'el-icon-link'},
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/friendLink/list'),
-        meta: {title: '友链列表', icon: 'el-icon-document'}
+        meta: {title: '友链列表'}
       },
       {
         path: 'add',
         name: 'add',
         component: () => import('@/views/friendLink/add'),
-        meta: {title: '添加友链', icon: 'el-icon-document'}
+        meta: {title: '添加友链'}
       }
     ]
   },
@@ -160,19 +160,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/friendLink/list',
     name: 'advice',
-    meta: {title: '推荐管理', icon: 'el-icon-film'},
+    meta: {title: '推荐管理', icon: 'el-icon-folder-add'},
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/advice/list'),
-        meta: {title: '推荐列表', icon: 'el-icon-document'}
+        meta: {title: '推荐列表'}
       },
       {
         path: 'add',
         name: 'add',
         component: () => import('@/views/advice/add'),
-        meta: {title: '添加推荐', icon: 'el-icon-document'}
+        meta: {title: '添加推荐'}
       }
     ]
   },
@@ -182,19 +182,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/blog/list',
     name: 'blog',
-    meta: {title: '博客管理', icon: 'el-icon-film'},
+    meta: {title: '博客管理', icon: 'el-icon-s-management'},
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/blog/list'),
-        meta: {title: '博客列表', icon: 'el-icon-document'}
+        meta: {title: '博客列表'}
       },
       {
         path: 'add',
         name: 'add',
         component: () => import('@/views/blog/add'),
-        meta: {title: '博客推荐', icon: 'el-icon-document'}
+        meta: {title: '博客推荐'}
       }
     ]
   },
@@ -203,19 +203,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/practice/list',
     name: 'practice',
-    meta: {title: '练习管理', icon: 'el-icon-film'},
+    meta: {title: '练习管理', icon: 'el-icon-s-data'},
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/practice/list'),
-        meta: {title: '练习列表', icon: 'el-icon-document'}
+        meta: {title: '练习列表'}
       },
       {
         path: 'add',
         name: 'add',
         component: () => import('@/views/practice/add'),
-        meta: {title: '练习推荐', icon: 'el-icon-document'}
+        meta: {title: '练习推荐'}
       }
     ]
   },
@@ -224,7 +224,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  mode: 'history', // require service support
+  mode: 'hash', // require service support
   scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })

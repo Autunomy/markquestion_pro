@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 //定时任务
-@Configuration
-@EnableAsync
-@EnableScheduling
+//@Configuration
+//@EnableAsync
+//@EnableScheduling
 public class ScheduleTask {
     @Autowired
     ContestMapper contestMapper;

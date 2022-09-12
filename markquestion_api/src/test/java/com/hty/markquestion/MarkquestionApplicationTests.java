@@ -42,9 +42,12 @@ class MarkquestionApplicationTests {
     @Autowired
     CommentReplyService commentReplyService;
 
+    @Autowired
+    AdviceMapper adviceMapper;
+
     @Test
     void test1() {
-        System.out.println(commentReplyService.queryCommentReply(8));
+        List<Advice> advice = adviceMapper.selectList(null);
+        System.out.println(advice);
     }
-
 }

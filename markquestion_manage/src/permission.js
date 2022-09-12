@@ -7,26 +7,26 @@ import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import current from "element-ui/packages/table/src/store/current";
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
-
-const whiteList = ['/login'] // no redirect whitelist
-
-let permissionList = []
+// NProgress.configure({ showSpinner: false }) // NProgress Configuration
+//
+// const whiteList = ['/login'] // no redirect whitelist
+//
+// let permissionList = []
 
 //检查路由权限
-function checkChildrenRoutePermission(currentRoute){
-  if(currentRoute.meta && currentRoute.meta.permission && permissionList.includes(currentRoute.meta.permission)){
-    currentRoute.hidden = false;
-  }else{
-    currentRoute.hidden = true;
-  }
-
-  if(currentRoute.children){
-    currentRoute.children.forEach(route => {
-      checkChildrenRoutePermission(route)
-    })
-  }
-}
+// function checkChildrenRoutePermission(currentRoute){
+//   if(currentRoute.meta && currentRoute.meta.permission && permissionList.includes(currentRoute.meta.permission)){
+//     currentRoute.hidden = false;
+//   }else{
+//     currentRoute.hidden = true;
+//   }
+//
+//   if(currentRoute.children){
+//     currentRoute.children.forEach(route => {
+//       checkChildrenRoutePermission(route)
+//     })
+//   }
+// }
 
 // router.beforeEach(async(to, from, next) => {
 //   // start progress bar
@@ -76,7 +76,7 @@ function checkChildrenRoutePermission(currentRoute){
 //   }
 // })
 
-router.afterEach(() => {
-  // finish progress bar
-  NProgress.done()
-})
+// router.afterEach(() => {
+//   // finish progress bar
+//   NProgress.done()
+// })
