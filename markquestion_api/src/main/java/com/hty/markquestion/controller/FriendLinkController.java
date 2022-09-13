@@ -7,10 +7,7 @@ import com.hty.markquestion.constant.ResponseMessage;
 import com.hty.markquestion.mapper.FriendLinkMapper;
 import com.hty.markquestion.mapper.FriendLinkTagMapper;
 import com.hty.markquestion.mapper.WebBasicMessageMapper;
-import com.hty.markquestion.pojo.Contest;
-import com.hty.markquestion.pojo.FriendLink;
-import com.hty.markquestion.pojo.FriendLinkTag;
-import com.hty.markquestion.pojo.WebBasicMessage;
+import com.hty.markquestion.pojo.*;
 import com.hty.markquestion.pojo.vo.PageInfo;
 import com.hty.markquestion.pojo.vo.Response;
 import io.swagger.annotations.ApiOperation;
@@ -156,9 +153,46 @@ public class FriendLinkController {
     }
 
 
-//    @GetMapping("/searchFriendLinkByName")
-//    @ResponseBody
-//    public String searchFriendLinkByName(String name){
-//
-//    }
+    @PostMapping("/searchFriendLinkByName")
+    @ResponseBody
+    public String searchFriendLinkByName(String searchCondition,String currentPage,String pageSize){
+        List<FriendLink> friendLinkList = friendLinkMapper.searchFriendLink(searchCondition, (Integer.parseInt(currentPage) - 1) * Integer.parseInt(pageSize), Integer.valueOf(pageSize));
+        //获取搜索出来的条数 用来分页
+        Integer total = friendLinkMapper.searchCount(searchCondition);
+        Response response = new Response(ResponseMessage.SUCCESS, friendLinkList);
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage), Integer.valueOf(pageSize), total));
+        return JSON.toJSONString(response);
+    }
+
+    @GetMapping("/deleteFriendLinkById")
+    @ResponseBody
+    public String deleteFriendLinkById(String id){
+        int rows = friendLinkMapper.deleteById(Integer.valueOf(id));
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    @PostMapping("/updateFriendLink")
+    @ResponseBody
+    public String updateFriendLink(String id,String linkName,String link,String tag,String introduce,String description){
+        FriendLink friendLink = friendLinkMapper.selectById(Integer.valueOf(id));
+        friendLink.setLinkName(linkName);
+        friendLink.setLink(link);
+        friendLink.setTag(tag);
+        friendLink.setIntroduce(introduce);
+        friendLink.setDescription(description);
+        int rows = friendLinkMapper.updateById(friendLink);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
+    }
 }

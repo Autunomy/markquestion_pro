@@ -1,6 +1,6 @@
 数据库
 
-```
+```sql
 question表添加一个字段 难度   level
 question表添加一个字段 原题链接   link
 contest表添加一个字段 比赛名称  contestName
@@ -21,6 +21,9 @@ alter table question
     
 message_board表添加索引
 alter table message_board add fulltext ftk_message(message) with parser ngram;
+
+friend_link表添加索引
+alter table friend_link add fulltext ftk_link_name(link_name) with parser ngram;
 ```
 
 创建blog文件夹

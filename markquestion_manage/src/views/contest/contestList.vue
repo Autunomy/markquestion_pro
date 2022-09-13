@@ -33,7 +33,7 @@
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="updateContest(scope.row)">编辑</el-button>
+          <el-button type="text" size="small" @click="showUpdateContest(scope.row)">编辑</el-button>
           <el-button @click="deleteContest(scope.row.id)" type="text" size="small" style="color: red">删除</el-button>
         </template>
       </el-table-column>
@@ -48,6 +48,41 @@
       @current-change="handleCurrentPage"
       style="text-align: center;margin-top: 20px;margin-bottom: 50px">
     </el-pagination>
+    <!--修改页面-->
+    <el-dialog title="修改比赛" :visible.sync="isShow" top="20px">
+      <el-form :model="contest">
+        <el-form-item label="比赛平台">
+          <el-select v-model="contest.platform" placeholder="请选择">
+            <el-option
+              v-for="platform in platformList"
+              :key="platform.platform"
+              :label="platform.platform"
+              :value="platform.platform">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="比赛链接">
+          <el-input v-model="contest.link" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="比赛日期">
+          <div class="block">
+            <el-date-picker
+              v-model="contest.contestTime"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择日期时间">
+            </el-date-picker>
+          </div>
+        </el-form-item>
+        <el-form-item label="比赛名称">
+          <el-input v-model="contest.contestName" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="this.isShow = false">取 消</el-button>
+        <el-button type="primary" @click="updateContest">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,7 +101,10 @@ export default {
         currentPage:1,
         pageSize:10,
         total:0
-      }
+      },
+      isShow:false,
+      contest:{},
+      platformList:[]
     }
   },
   mounted() {
@@ -119,8 +157,36 @@ export default {
         });
       });
     },
-    updateContest(data){
-
+    showUpdateContest(data){
+      this.isShow = true;
+      this.contest = data
+      //获取比赛平台
+      questionApi.getQuestionFrom().then(resp => {
+        this.platformList = resp.data;
+      })
+    },
+    updateContest(){
+      contestApi.updateContest(qs.stringify(this.contest)).then(resp => {
+        if(resp.code === 200){
+          this.$message.success({
+            message:"修改成功",
+            duration:1500
+          })
+          this.queryContestPage();
+        }else{
+          this.$message.error({
+            message:"修改失败",
+            duration:1500
+          })
+        }
+      })
+      this.isShow = false;
+    },
+    handleCurrentPage(currentPage){
+      //更新当前页码
+      this.pageInfo.currentPage = currentPage
+      //访问服务器数据
+      this.queryAllLink()
     }
   }
 }

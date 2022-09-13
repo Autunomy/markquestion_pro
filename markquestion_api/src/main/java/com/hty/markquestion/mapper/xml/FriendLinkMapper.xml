@@ -1,0 +1,18 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hty.markquestion.mapper.FriendLinkMapper">
+
+    <select id="searchFriendLink" resultType="com.hty.markquestion.pojo.FriendLink">
+        select *
+        from friend_link
+        where match(link_name) against(#{searchCondition})
+            limit #{currentPage},#{pageSize};
+    </select>
+
+    <select id="searchCount" resultType="java.lang.Integer">
+        select count(*)
+        from friend_link
+        where match(link_name) against(#{searchCondition})
+    </select>
+</mapper>

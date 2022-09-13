@@ -142,14 +142,34 @@
         <!-- 添加资源 -->
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
-                <!-- src/main/resources下的指定资源放行 -->
+                <directory>src/main/java</directory>
                 <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.yml</include>
                     <include>**/*.xml</include>
+                    <include>**/*.dtd</include>
                 </includes>
                 <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <!--源文件夹-->
+                <directory>src/main/webapp</directory>
+                <!--指定编译到META-INF/resources-->
+                <targetPath>META-INF/resources</targetPath>
+                <!--指定源文件夹中的那些资源要编译进去-->
+                <includes>
+                    <!--表示所有内容-->
+                    <include>*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
             </resource>
         </resources>
     </build>

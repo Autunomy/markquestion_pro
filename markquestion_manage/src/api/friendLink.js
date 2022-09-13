@@ -28,10 +28,24 @@ export default {
       data
     })
   },
-  searchFriendLinkByName(name){
+  searchFriendLinkByName(data){
     return request({
-      url:"/friendLink/searchFriendLinkByName?name="+name,
+      url:"/friendLink/searchFriendLinkByName",
+      method:"POST",
+      data
+    })
+  },
+  deleteFriendLinkById(id){
+    return request({
+      url:"/friendLink/deleteFriendLinkById?id="+id,
       method:"GET"
+    })
+  },
+  updateFriendLink(data){
+    return request({
+      url:"/friendLink/updateFriendLink",
+      method:"POST",
+      data
     })
   }
 }

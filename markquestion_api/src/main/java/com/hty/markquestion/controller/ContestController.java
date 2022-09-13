@@ -150,6 +150,28 @@ public class ContestController {
         }
 
         return JSON.toJSONString(response);
+    }
 
+    @PostMapping("/updateContest")
+    @ResponseBody
+    public String updateContest(String id,String platform,String link,String contestTime,String contestName) throws ParseException {
+        Contest contest = contestMapper.selectById(Integer.valueOf(id));
+        contest.setPlatform(platform);
+        contest.setLink(link);
+        contest.setContestTime(new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(contestTime).getTime()));
+        if(new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(contestTime).getTime()).getTime() >= System.currentTimeMillis()){
+            contest.setIsExpired(0);
+        }else{
+            contest.setIsExpired(1);
+        }
+        contest.setContestName(contestName);
+        int rows = contestMapper.updateById(contest);
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
     }
 }

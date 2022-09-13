@@ -20,6 +20,13 @@ export default {
       method:"POST",
       data
     })
+  },
+  updateContest(data){
+    return request({
+      url:"/contest/updateContest",
+      method:"POST",
+      data
+    })
   }
 }
 
