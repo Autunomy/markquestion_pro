@@ -195,4 +195,25 @@ public class FriendLinkController {
         }
         return JSON.toJSONString(response);
     }
+
+    @GetMapping("/queryAllFriendLinkTag")
+    @ResponseBody
+    public String queryAllFriendLinkTag(){
+        List<FriendLinkTag> friendLinkTagList = friendLinkTagMapper.selectList(null);
+        Response response = new Response(ResponseMessage.SUCCESS, friendLinkTagList);
+        return JSON.toJSONString(response);
+    }
+
+    @GetMapping("/deleteFriendLinkTag")
+    @ResponseBody
+    public String deleteFriendLinkTag(String id){
+        int rows = friendLinkTagMapper.deleteById(Integer.valueOf(id));
+        Response response = null;
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
+    }
 }

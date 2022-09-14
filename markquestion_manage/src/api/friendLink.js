@@ -47,6 +47,19 @@ export default {
       method:"POST",
       data
     })
+  },
+  queryAllFriendLinkTag(){
+    return request({
+      url:"/friendLink/queryAllFriendLinkTag",
+      method:"GET"
+    })
+  },
+  deleteFriendLinkTag(id) {
+    return request({
+      url:"/friendLink/deleteFriendLinkTag?id="+id,
+      method:"GET"
+    })
   }
+
 }
 
