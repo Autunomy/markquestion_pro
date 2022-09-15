@@ -6,7 +6,7 @@
                     <!--列表-->
                     <el-collapse-item v-for="advice in adviceList">
                         <template slot="title">
-                            <el-avatar shape="square" :size="'small'" :src="'http://www.autunomy.top/images/advice/1.png'"></el-avatar>
+                            <el-avatar shape="square" :size="'small'" :src="advice.adviceImg"></el-avatar>
                             <div style="font-size: 18px">
                                 {{advice.adviceName}}
                                 <el-tag type="mini" style="margin-left: 5px">{{advice.adviceTag}}</el-tag>
@@ -52,11 +52,11 @@ export default {
         //获取全部的推荐
         queryAdviceList(){
             adviceApi.queryAdviceList().then(resp => {
-                console.log(resp)
                 this.adviceList = resp.data.data;
                 for(let i = 0;i<this.adviceList.length;++i){
                     //格式化markdown
                     this.adviceList[i].adviceContent = marked(this.adviceList[i].adviceContent)
+                    this.adviceList[i].adviceImg = "http://localhost:8001"+this.adviceList[i].adviceImg;
                 }
             })
         }
