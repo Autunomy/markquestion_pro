@@ -25,6 +25,16 @@
       <el-form-item label="推荐描述">
         <el-input type="textarea" v-model="advice.adviceContent" placeholder="支持markdown语法"></el-input>
       </el-form-item>
+      <el-form-item label="上传图片" >
+        <el-upload
+          class="avatar-uploader"
+          action="http://localhost:8001/advice/uploadImg"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" >
+          <i v-else class="el-icon-plus avatar-uploader-icon" style="border: 1px solid gray"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item style="text-align: center">
         <el-button type="primary" @click="addAdvice()">提交</el-button>
         <el-button @click="resetForm()">重置</el-button>
@@ -52,38 +62,108 @@ import qs from "qs";
 
 export default {
   name: "add",
-  data(){
+  data() {
     return {
-      advice:{},
-      adviceTagList:[],
-      isShow:false,
-      newTag:{}
+      advice: {},
+      adviceTagList: [],
+      isShow: false,
+      newTag: {},
+      imageUrl:""
     }
   },
   mounted() {
     this.getAdviceTagList();
   },
-  methods:{
-    getAdviceTagList(){
+  methods: {
+    getAdviceTagList() {
       adviceApi.getAdviceTagList().then(resp => {
         this.adviceTagList = resp.data;
       })
     },
-    addTag(){
-
+    addTag() {
+      adviceApi.addTag(this.newTag.name).then(resp => {
+        if(resp.code === 200){
+          this.$message.success({
+            message:"添加成功",
+            duration:1500
+          })
+          this.getAdviceTagList()
+        }else{
+          this.$message.error({
+            message:"添加失败",
+            duration:1500
+          })
+        }
+      })
+      this.isShow = false
     },
-    addAdvice(){},
-    resetForm(){
+    addAdvice() {
+      console.log(qs.stringify(this.advice))
+      adviceApi.addAdvice(qs.stringify(this.advice)).then(resp => {
+        if(resp.code === 200){
+          this.$message.success({
+            message:"添加成功",
+            duration:1500
+          })
+          this.$router.push("/advice/list")
+        }else{
+          this.$message.error({
+            message:"添加失败",
+            duration:1500
+          })
+          this.resetForm();
+        }
+      })
+    },
+    resetForm() {
+      //先删除图片
+      this.deleteImg();
+      //将信息清空
       this.advice = {}
     },
-    showDialog(){
+    showDialog() {
       this.isShow = true;
     },
-    manageTag(){}
+    manageTag() {
+    },
+    handleAvatarSuccess(response){
+      this.imageUrl = "http://localhost:8001/images/advice/"+response.data;
+      this.advice.adviceImg = response.data;
+    },
+    //删除图片
+    deleteImg(){
+      adviceApi.deleteImg(this.advice.adviceImg);
+      this.imageUrl = ""
+    }
   }
 }
 </script>
 
 <style scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
 
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

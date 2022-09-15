@@ -1,7 +1,12 @@
 package com.hty.markquestion.controller.manage;
 
+import com.alibaba.fastjson.JSON;
+import com.hty.markquestion.constant.ResponseMessage;
+import com.hty.markquestion.mapper.AdviceTagMapper;
 import com.hty.markquestion.mapper.AuthorMessageMapper;
+import com.hty.markquestion.pojo.AdviceTag;
 import com.hty.markquestion.pojo.AuthorMessage;
+import com.hty.markquestion.pojo.vo.Response;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Part;
@@ -27,6 +29,9 @@ public class ManageAuthorMessageController {
 
     @Autowired
     AuthorMessageMapper authorMessageMapper;
+
+    @Autowired
+    AdviceTagMapper adviceTagMapper;
 
     @GetMapping("/toManageAuthorMessage")
     @ApiOperation("跳转到博主信息管理首页")
@@ -120,4 +125,5 @@ public class ManageAuthorMessageController {
 
         return "redirect:/manage/author/toManageAuthorMessage";
     }
+
 }
