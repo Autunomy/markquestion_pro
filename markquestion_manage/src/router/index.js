@@ -179,6 +179,12 @@ export const constantRoutes = [
         name: 'add',
         component: () => import('@/views/advice/add'),
         meta: {title: '添加推荐'}
+      },
+      {
+        path: 'adviceTagList',
+        name: 'adviceTagList',
+        component: () => import('@/views/advice/adviceTagList'),
+        meta: {title: '推荐标签管理'}
       }
     ]
   },

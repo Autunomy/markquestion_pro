@@ -82,6 +82,7 @@ export default {
     },
     addTag() {
       adviceApi.addTag(this.newTag.name).then(resp => {
+        console.log(resp)
         if(resp.code === 200){
           this.$message.success({
             message:"添加成功",
@@ -127,7 +128,7 @@ export default {
     manageTag() {
     },
     handleAvatarSuccess(response){
-      this.imageUrl = "http://localhost:8001/images/advice/"+response.data;
+      this.imageUrl = "http://180.76.97.59:8001/images/advice/"+response.data;
       this.advice.adviceImg = response.data;
     },
     //删除图片

@@ -45,6 +45,12 @@ export default {
       method:"POST",
       data
     })
+  },
+  deleteAdviceTag(id){
+    return request({
+      url:"/advice/deleteAdviceTag?id="+id,
+      method:"GET"
+    })
   }
 
 }

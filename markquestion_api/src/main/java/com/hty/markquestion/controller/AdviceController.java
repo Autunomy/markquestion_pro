@@ -85,27 +85,6 @@ public class AdviceController {
     public String uploadImg(MultipartFile file) throws IOException {
         Response response = null;
         //------------------本地代码---------------------------------------
-        if(!file.isEmpty()){
-            //判断文件是否有后缀
-            String name = file.getOriginalFilename();
-            if(name != null && !name.contains(".")){//文件名中没有后缀
-                response = new Response(ResponseMessage.ERROR,"文件格式不正确");
-            }else{
-                //获取文件后缀
-                String last = "";
-                for(int i=name.length()-1;i>=0;--i){
-                    if(name.charAt(i) == '.') break;
-                    last = name.charAt(i)+""+last;
-                }
-                String fileName = UUID.randomUUID().toString().replaceAll("-"," ").substring(0,6)+"."+last;
-//                System.out.println("文件名---->"+fileName);
-                file.transferTo(new File("E:\\images\\advice\\"+fileName));
-                response = new Response(ResponseMessage.SUCCESS,fileName);
-            }
-        }
-        //----------------------------------------------------------------
-
-        //-----------------------服务器代码--------------------------------
 //        if(!file.isEmpty()){
 //            //判断文件是否有后缀
 //            String name = file.getOriginalFilename();
@@ -118,13 +97,34 @@ public class AdviceController {
 //                    if(name.charAt(i) == '.') break;
 //                    last = name.charAt(i)+""+last;
 //                }
-//                //拼接文件名
-//                String fileName =  UUID.randomUUID().toString().replaceAll("-"," ").substring(0,6)+last;
-//                //保存文件
-//                file.transferTo(new File("/markquestion/images/head/"+fileName));
+//                String fileName = UUID.randomUUID().toString().replaceAll("-"," ").substring(0,6)+"."+last;
+////                System.out.println("文件名---->"+fileName);
+//                file.transferTo(new File("E:\\images\\advice\\"+fileName));
 //                response = new Response(ResponseMessage.SUCCESS,fileName);
 //            }
 //        }
+        //----------------------------------------------------------------
+
+        //-----------------------服务器代码--------------------------------
+        if(!file.isEmpty()){
+            //判断文件是否有后缀
+            String name = file.getOriginalFilename();
+            if(name != null && !name.contains(".")){//文件名中没有后缀
+                response = new Response(ResponseMessage.ERROR,"文件格式不正确");
+            }else{
+                //获取文件后缀
+                String last = "";
+                for(int i=name.length()-1;i>=0;--i){
+                    if(name.charAt(i) == '.') break;
+                    last = name.charAt(i)+""+last;
+                }
+                //拼接文件名
+                String fileName =  UUID.randomUUID().toString().replaceAll("-"," ").substring(0,6)+last;
+                //保存文件
+                file.transferTo(new File("/markquestion/images/advice/"+fileName));
+                response = new Response(ResponseMessage.SUCCESS,fileName);
+            }
+        }
         //----------------------------------------------------------------
         return JSON.toJSONString(response);
     }
@@ -134,19 +134,7 @@ public class AdviceController {
     public String deleteImg(String name){
         Response response = null;
         //----------------------本地--------------------------
-        String path = "E:\\images\\advice\\"+name;
-        File file = new File(path);
-        if(file.exists()){
-            if(file.delete()){
-                response = new Response(ResponseMessage.SUCCESS);
-            }else{
-                response = new Response(ResponseMessage.ERROR);
-            }
-        }else{
-            response = new Response(ResponseMessage.ERROR);
-        }
-        //---------------------服务器-------------------------
-//        String path = "/markquestion/images/head/"+name;
+//        String path = "E:\\images\\advice\\"+name;
 //        File file = new File(path);
 //        if(file.exists()){
 //            if(file.delete()){
@@ -157,6 +145,18 @@ public class AdviceController {
 //        }else{
 //            response = new Response(ResponseMessage.ERROR);
 //        }
+        //---------------------服务器-------------------------
+        String path = "/markquestion/images/"+name;
+        File file = new File(path);
+        if(file.exists()){
+            if(file.delete()){
+                response = new Response(ResponseMessage.SUCCESS);
+            }else{
+                response = new Response(ResponseMessage.ERROR);
+            }
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
 
         //----------------------------------------------------
 
@@ -228,29 +228,36 @@ public class AdviceController {
         Response response = null;
 
         Advice advice = adviceMapper.selectById(Integer.valueOf(id));
+        //将对标签的数量-1
+        QueryWrapper<AdviceTag> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("advice_tag_name", advice.getAdviceTag());
+        AdviceTag adviceTag = adviceTagMapper.selectOne(queryWrapper);
+        adviceTag.setAdviceTagNum(adviceTag.getAdviceTagNum()-1);
+        adviceTagMapper.updateById(adviceTag);
 
+        //删除图片
         //----------------------本地--------------------------
-        String path = "E:"+advice.getAdviceImg();
+//        String path = "E:"+advice.getAdviceImg();
+//        File file = new File(path);
+//        //图片不能是默认图片
+//        if(file.exists() && !advice.getAdviceImg().equals("/images/advice/1.JPG")){
+//            if(!file.delete()){
+//                response = new Response(ResponseMessage.ERROR,"删除图片删除失败");
+//            }
+//        }else{
+//            response = new Response(ResponseMessage.ERROR,"删除图片删除失败");
+//        }
+        //---------------------服务器-------------------------
+        String path = "/markquestion"+advice.getAdviceImg();
         File file = new File(path);
-        if(file.exists()){
+        //图片不能是默认图片
+        if(file.exists() && !advice.getAdviceImg().equals("/images/advice/1.JPG")){
             if(!file.delete()){
                 response = new Response(ResponseMessage.ERROR,"删除图片删除失败");
             }
         }else{
             response = new Response(ResponseMessage.ERROR,"删除图片删除失败");
         }
-        //---------------------服务器-------------------------
-//        String path = "/markquestion"+name;
-//        File file = new File(path);
-//        if(file.exists()){
-//            if(file.delete()){
-//                response = new Response(ResponseMessage.SUCCESS);
-//            }else{
-//                response = new Response(ResponseMessage.ERROR);
-//            }
-//        }else{
-//            response = new Response(ResponseMessage.ERROR);
-//        }
 
         //----------------------------------------------------
 
@@ -273,19 +280,51 @@ public class AdviceController {
                                String adviceDescription,
                                String adviceContent,
                                String adviceImg){
-        Advice advice = new Advice();
+
+        Advice advice = adviceMapper.selectById(Integer.valueOf(id));
         advice.setId(Integer.valueOf(id));
         advice.setAdviceName(adviceName);
         advice.setAdviceAuthor(author);
         advice.setAdviceTag(adviceTag);
         advice.setAdviceDescribe(adviceDescription);
         advice.setAdviceContent(adviceContent);
-        advice.setAdviceImg(adviceImg);
+
+        //首先删除原图片 如果原图像是默认图片就不删除
+        //----------------------本地--------------------------
+//        String path = "E:"+advice.getAdviceImg();
+//        System.out.println(path);
+//        File file = new File(path);
+//        if(file.exists() && !advice.getAdviceImg().equals("/images/advice/1.JPG")){
+//            file.delete();
+//        }
+        //---------------------服务器-------------------------
+        String path = "/markquestion"+advice.getAdviceImg();
+        File file = new File(path);
+        if(file.exists() && !advice.getAdviceImg().equals("/images/advice/1.JPG")){
+            file.delete();
+        }
+
+        //----------------------------------------------------
+
+        advice.setAdviceImg("/images/advice/"+adviceImg);
         advice.setCreateTime(new Date());
         advice.setUpdateTime(new Date());
 
         Response response = null;
         int rows = adviceMapper.updateById(advice);
+        if(rows == 1){
+            response = new Response(ResponseMessage.SUCCESS);
+        }else{
+            response = new Response(ResponseMessage.ERROR);
+        }
+        return JSON.toJSONString(response);
+    }
+
+    @GetMapping("/deleteAdviceTag")
+    @ResponseBody
+    public String deleteAdviceTag(String id){
+        int rows = adviceTagMapper.deleteById(Integer.valueOf(id));
+        Response response = null;
         if(rows == 1){
             response = new Response(ResponseMessage.SUCCESS);
         }else{

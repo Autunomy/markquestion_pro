@@ -169,7 +169,7 @@ export default {
       adviceApi.queryAllAdvice(qs.stringify(this.pageInfo)).then(resp => {
         this.adviceList = resp.data;
         this.adviceList.forEach(advice => {
-          advice.adviceImg = "http://localhost:8001" + advice.adviceImg;
+          advice.adviceImg = "http://180.76.97.59:8001" + advice.adviceImg;
           advice.createTime = dateFormat.dateFormat(new Date(advice.createTime));
           advice.updateTime = dateFormat.dateFormat(new Date(advice.updateTime));
         })
@@ -195,6 +195,8 @@ export default {
           })
         }
         this.isShow = false;
+        //刷新页面 因为更新后的图片不显示 需要进行刷新
+        window.location.reload()
         this.queryAllAdvice();
       })
 
@@ -258,7 +260,7 @@ export default {
       this.queryAllAdvice();
     },
     handleAvatarSuccess(response){
-      this.imageUrl = "http://localhost:8001/images/advice/"+response.data;
+      this.imageUrl = "http://180.76.97.59:8001/images/advice/"+response.data;
       this.advice.adviceImg = response.data;
     },
     manageTag(){

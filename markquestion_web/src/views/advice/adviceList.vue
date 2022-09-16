@@ -56,7 +56,7 @@ export default {
                 for(let i = 0;i<this.adviceList.length;++i){
                     //格式化markdown
                     this.adviceList[i].adviceContent = marked(this.adviceList[i].adviceContent)
-                    this.adviceList[i].adviceImg = "http://localhost:8001"+this.adviceList[i].adviceImg;
+                    this.adviceList[i].adviceImg = "http://180.76.97.59:8001"+this.adviceList[i].adviceImg;
                 }
             })
         }
