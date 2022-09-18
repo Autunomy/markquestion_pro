@@ -1,0 +1,16 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hty.markquestion.mapper.AdviceMapper">
+    <select id="searchAdvice" resultType="com.hty.markquestion.pojo.Advice">
+        select *
+        from advice
+        where match(advice_name) against(#{search})
+            limit #{currentPage},#{pageSize};
+    </select>
+    <select id="searchCount" resultType="java.lang.Integer">
+        select count(*)
+        from advice
+        where match(advice_name) against(#{search});
+    </select>
+</mapper>

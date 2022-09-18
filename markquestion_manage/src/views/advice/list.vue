@@ -138,6 +138,7 @@ import adviceApi from "@/api/advice";
 import qs from "qs";
 import dateFormat from "@/utils/dateFormat";
 import friendLinkApi from "@/api/friendLink";
+import questionApi from "@/api/question";
 
 export default {
   name: "list",
@@ -253,7 +254,26 @@ export default {
       }
     },
     searchAdvice(){
-
+      if(this.searchCondition !== "" && this.searchCondition !== null){
+        if((this.pageInfo.total / this.pageInfo.pageSize) + 1 < this.pageInfo.currentPage){
+          this.pageInfo.currentPage = 1
+        }
+        //搜索条件
+        let data = "search=" + this.searchCondition + "&" + qs.stringify(this.pageInfo);
+        adviceApi.searchAdvice(data).then(resp => {
+          if(resp.code === 200){
+            this.adviceList = resp.data;
+            this.adviceList.forEach(advice => {
+              advice.createTime = dateFormat.dateFormat(new Date(advice.createTime))
+              advice.updateTime = dateFormat.dateFormat(new Date(advice.updateTime))
+            })
+            this.pageInfo = resp.pageInfo;
+          }
+        })
+      }else{//搜索条件为空表示搜索全部信息
+        this.pageInfo.currentPage = 1;
+        this.queryAllAdvice();
+      }
     },
     cleanSearch(){
       this.searchCondition = "";

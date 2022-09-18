@@ -14,7 +14,7 @@ import detail from "@/views/author/wrong_practice/detail";
 import adviceList from "@/views/advice/adviceList";
 import practiceList from "@/views/practice/practiceList";
 import utilsList from "@/views/utils/utilsList";
-import content from "@/views/blog/content";
+import blogContent from "@/views/blog/blogContent";
 
 
 Vue.use(VueRouter)
@@ -98,8 +98,8 @@ let vueRouter =  new VueRouter({
         },
         //博客展示页面
         {
-            path:"/content",
-            component:content
+            path:"/blogContent/:id",
+            component:blogContent
         }
     ]
 })

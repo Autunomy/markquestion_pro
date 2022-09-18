@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @Slf4j
 @RequestMapping("/advice")
 public class AdviceController {
@@ -41,7 +41,6 @@ public class AdviceController {
     WebBasicMessageMapper webBasicMessageMapper;
 
     @GetMapping("queryAdviceList")
-    @ResponseBody
     public String queryAdviceList(){
         List<Advice> advice = adviceMapper.selectList(null);
         Response response = new Response(ResponseMessage.SUCCESS, advice);
@@ -55,7 +54,6 @@ public class AdviceController {
      * @return
      */
     @PostMapping("/queryAllAdvice")
-    @ResponseBody
     public String queryAllAdvice(String currentPage,String pageSize){
         Page<Advice> page = new Page<>();
         page.setCurrent(Long.parseLong(currentPage));//设置当前页码
@@ -73,7 +71,6 @@ public class AdviceController {
     }
 
     @GetMapping("/getAdviceTagList")
-    @ResponseBody
     public String getAdviceTagList(){
         List<AdviceTag> adviceTagList = adviceTagMapper.selectList(null);
         Response response = new Response(ResponseMessage.SUCCESS,adviceTagList);
@@ -81,7 +78,6 @@ public class AdviceController {
     }
 
     @PostMapping("/uploadImg")
-    @ResponseBody
     public String uploadImg(MultipartFile file) throws IOException {
         Response response = null;
         //------------------本地代码---------------------------------------
@@ -130,7 +126,6 @@ public class AdviceController {
     }
 
     @GetMapping("/deleteImg")
-    @ResponseBody
     public String deleteImg(String name){
         Response response = null;
         //----------------------本地--------------------------
@@ -164,7 +159,6 @@ public class AdviceController {
     }
 
     @GetMapping("/addTag")
-    @ResponseBody
     public String addTag(String tagName){
         QueryWrapper<AdviceTag> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("advice_tag_name",tagName);
@@ -184,7 +178,6 @@ public class AdviceController {
     }
 
     @PostMapping("/addAdvice")
-    @ResponseBody
     public String addAdvice(String adviceName,
                             String author,
                             String adviceTag,
@@ -223,7 +216,6 @@ public class AdviceController {
     }
 
     @GetMapping("/deleteAdvice")
-    @ResponseBody
     public String deleteAdvice(String id){
         Response response = null;
 
@@ -272,7 +264,6 @@ public class AdviceController {
     }
 
     @PostMapping("/updateAdvice")
-    @ResponseBody
     public String updateAdvice(String id,
                                String adviceName,
                                String author,
@@ -321,7 +312,6 @@ public class AdviceController {
     }
 
     @GetMapping("/deleteAdviceTag")
-    @ResponseBody
     public String deleteAdviceTag(String id){
         int rows = adviceTagMapper.deleteById(Integer.valueOf(id));
         Response response = null;
@@ -332,4 +322,24 @@ public class AdviceController {
         }
         return JSON.toJSONString(response);
     }
+
+    /***
+     * 按照名称搜索推荐信息
+     * @param search
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/searchAdvice")
+    public String searchQuestion(@RequestParam("search") String search,
+                                 @RequestParam("currentPage") String currentPage,
+                                 @RequestParam("pageSize") String pageSize){
+        List<Advice> adviceList = adviceMapper.searchAdvice(search, (Integer.parseInt(currentPage) - 1) * Integer.parseInt(pageSize), Integer.valueOf(pageSize));
+        //获取搜索出来的条数 用来分页
+        Integer total = adviceMapper.searchCount(search);
+        Response response = new Response(ResponseMessage.SUCCESS, adviceList);
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage), Integer.valueOf(pageSize), total));
+        return JSON.toJSONString(response);
+    }
+
 }

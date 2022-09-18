@@ -152,7 +152,7 @@
                 <div slot="header" class="clearfix">
                     <span>题解信息</span>
                     <el-button type="primary" size="mini" style="display: inline-block;float:right;">
-                        <a href="" style="text-decoration: none;color: white">原题链接</a>
+                        <a style="text-decoration: none;color: white" @click="jumpLink">原题链接</a>
                     </el-button>
                 </div>
                 <div class="text item">
@@ -333,6 +333,10 @@ export default {
             //设置当前题解的id
             this.comment.qid = this.qid;
             this.saveComment();
+        },
+        //跳转到原题链接
+        jumpLink(){
+            window.open(this.question.link)
         }
     }
 }

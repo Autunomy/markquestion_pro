@@ -6,7 +6,10 @@ import com.hty.markquestion.mapper.BlogClassMapper;
 import com.hty.markquestion.mapper.BlogCommentMapper;
 import com.hty.markquestion.mapper.BlogMapper;
 import com.hty.markquestion.mapper.PlatformMapper;
+import com.hty.markquestion.pojo.Blog;
+import com.hty.markquestion.pojo.BlogClass;
 import com.hty.markquestion.pojo.Platform;
+import com.hty.markquestion.pojo.vo.PageInfo;
 import com.hty.markquestion.pojo.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileSystemUtils;
@@ -49,6 +52,7 @@ public class BlogController {
         return "http://localhost:8080/images/blog/"+filename;
     }
 
+    //删除照片
     @GetMapping("/delPic")
     public String delPic(String path){
         path = path.substring(path.lastIndexOf("/")+1);
@@ -62,7 +66,32 @@ public class BlogController {
         return JSON.toJSONString(response);
     }
 
+    /***
+     * 获取所有博客信息
+     * @return
+     */
+    @PostMapping("/queryAllBlog")
+    public String queryAllBlog(String currentPage,String pageSize){
+        //这里减一的目的是 数据库中分页的下标从0开始，但是页面中是从1开始 需要减一
+        List<Blog> blogList = blogMapper.queryAllBlog(Integer.valueOf(currentPage)-1,Integer.valueOf(pageSize));
+        Integer total = blogMapper.selectCount(null);
+        Response response = new Response(ResponseMessage.SUCCESS,blogList);
+        response.setPageInfo(new PageInfo(Integer.valueOf(currentPage)-1,Integer.valueOf(pageSize),total));
+        return JSON.toJSONString(response);
+    }
 
 
+    @GetMapping("/queryBlogClass")
+    public String queryBlogClass(String id){
+        BlogClass blogClass = blogClassMapper.selectById(Integer.valueOf(id));
+        Response response = new Response(ResponseMessage.SUCCESS,blogClass);
+        return JSON.toJSONString(response);
+    }
 
+    @GetMapping("/queryAllClass")
+    public String queryAllClass(){
+        List<BlogClass> blogClassList = blogClassMapper.selectList(null);
+        Response response = new Response(ResponseMessage.SUCCESS,blogClassList);
+        return JSON.toJSONString(response);
+    }
 }

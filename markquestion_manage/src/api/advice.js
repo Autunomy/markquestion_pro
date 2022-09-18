@@ -51,6 +51,12 @@ export default {
       url:"/advice/deleteAdviceTag?id="+id,
       method:"GET"
     })
+  },
+  searchAdvice(search){
+    return request({
+      url:"/advice/searchAdvice?"+search,
+      method:"GET"
+    })
   }
 
 }

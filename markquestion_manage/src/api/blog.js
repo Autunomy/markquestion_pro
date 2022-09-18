@@ -15,5 +15,18 @@ export default {
       url: "/blog/delPic?path=" + path,
       method: 'GET'
     })
+  },
+  queryAllBlog(data){
+    return request({
+      url: "/blog/queryAllBlog",
+      method: 'POST',
+      data
+    })
+  },
+  queryAllClass(){
+    return request({
+      url:"/blog/queryAllClass",
+      method:"GET"
+    })
   }
 }

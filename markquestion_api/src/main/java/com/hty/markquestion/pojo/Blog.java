@@ -25,4 +25,6 @@ public class Blog {
     private Integer classId;
     private String content;
     private String descp;
+
+    private String className;
 }

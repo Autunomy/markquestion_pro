@@ -206,7 +206,7 @@ export const constantRoutes = [
         path: 'add',
         name: 'add',
         component: () => import('@/views/blog/add'),
-        meta: {title: '博客推荐'}
+        meta: {title: '添加博客'}
       }
     ]
   },

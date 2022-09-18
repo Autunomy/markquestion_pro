@@ -9,5 +9,18 @@ export default {
             data,
             headers:{'Content-Type': 'multipart/form-data'}
         })
+    },
+    queryAllBlog(data){
+        return request({
+            url: "/blog/queryAllBlog",
+            method: 'POST',
+            data
+        })
+    },
+    queryAllClass(){
+        return request({
+            url:"/blog/queryAllClass",
+            method:"GET"
+        })
     }
 }

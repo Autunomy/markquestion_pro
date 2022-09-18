@@ -20,9 +20,10 @@
                     <el-table-column property="platform" label="平台"></el-table-column>
                     <el-table-column label="地址" min-width="250">
                         <template v-slot="scope">
-                            <a href="">{{scope.row.link}}</a>
+                            <a href="#" @click="jumpLink(scope.row.link)">{{scope.row.link}}</a>
                         </template>
                     </el-table-column>
+                    <el-table-column property="contestTime" label="时间"></el-table-column>
                 </el-table>
             </el-dialog>
         </el-col>
@@ -32,6 +33,7 @@
 
 <script>
 import contestApi from "@/api/contest";
+import dateFormat from "@/utils/dateFormat";
 
 export default {
     name: "contest",
@@ -49,8 +51,10 @@ export default {
             contestApi.queryContestByDate(date).then(resp => {
                 let data = resp.data;
                 if(data.code === 200){
-                    console.log(data)
                     this.contestList = data.data;
+                    this.contestList.forEach(contest => {
+                        contest.contestTime = dateFormat.dateFormat(new Date(contest.contestTime));
+                    })
                 }else{
                     this.$message.warning({
                         message:"获取比赛失败，请刷新重试",
@@ -63,6 +67,9 @@ export default {
                     duration:2000
                 })
             })
+        },
+        jumpLink(link){
+            window.open(link)
         }
     }
 }
