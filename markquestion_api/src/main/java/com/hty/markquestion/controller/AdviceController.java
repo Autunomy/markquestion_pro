@@ -115,7 +115,7 @@ public class AdviceController {
                     last = name.charAt(i)+""+last;
                 }
                 //拼接文件名
-                String fileName =  UUID.randomUUID().toString().replaceAll("-"," ").substring(0,6)+last;
+                String fileName =  UUID.randomUUID().toString().replaceAll("-"," ").substring(0,6)+"."+last;
                 //保存文件
                 file.transferTo(new File("/markquestion/images/advice/"+fileName));
                 response = new Response(ResponseMessage.SUCCESS,fileName);
@@ -280,7 +280,14 @@ public class AdviceController {
         advice.setAdviceDescribe(adviceDescription);
         advice.setAdviceContent(adviceContent);
 
-        //首先删除原图片 如果原图像是默认图片就不删除
+        String temp = adviceImg;
+        //获取图片的文件名 防止重复拼接
+        if(adviceImg.lastIndexOf('/') >= 0){
+            temp = adviceImg.substring(adviceImg.lastIndexOf('/')+1);
+        }
+        log.info("文件名称===="+temp);
+
+        //首先删除原图片 如果原图像是默认图片就不删除 如果没有上传新图片也不删除
         //----------------------本地--------------------------
 //        String path = "E:"+advice.getAdviceImg();
 //        System.out.println(path);
@@ -291,13 +298,13 @@ public class AdviceController {
         //---------------------服务器-------------------------
         String path = "/markquestion"+advice.getAdviceImg();
         File file = new File(path);
-        if(file.exists() && !advice.getAdviceImg().equals("/images/advice/1.JPG")){
+        if(file.exists() && !advice.getAdviceImg().equals("/images/advice/1.JPG") && !advice.getAdviceImg().equals("/images/advice/"+temp)){
             file.delete();
         }
 
         //----------------------------------------------------
 
-        advice.setAdviceImg("/images/advice/"+adviceImg);
+        advice.setAdviceImg("/images/advice/"+temp);
         advice.setCreateTime(new Date());
         advice.setUpdateTime(new Date());
 

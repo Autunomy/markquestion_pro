@@ -163,6 +163,9 @@
                     {{ '浏览量:' + question.watch }}
                 </div>
                 <div class="text item">
+                    {{ '来源:' + question.platform }}
+                </div>
+                <div class="text item">
                     {{ '难度:' }}
                     <el-tag
                         :type="question.level === '简单' ? 'success' : (question.level === '中等' ? 'warning' : 'danger')"
@@ -336,7 +339,7 @@ export default {
         },
         //跳转到原题链接
         jumpLink(){
-            window.open(this.question.link)
+            window.location.href = this.url;
         }
     }
 }

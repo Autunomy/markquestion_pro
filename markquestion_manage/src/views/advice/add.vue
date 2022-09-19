@@ -28,7 +28,7 @@
       <el-form-item label="上传图片" >
         <el-upload
           class="avatar-uploader"
-          action="http://localhost:8001/advice/uploadImg"
+          action="http://180.76.97.59:8001/advice/uploadImg"
           :show-file-list="false"
           :on-success="handleAvatarSuccess">
           <img v-if="imageUrl" :src="imageUrl" class="avatar" >
