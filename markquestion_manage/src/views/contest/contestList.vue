@@ -186,7 +186,7 @@ export default {
       //更新当前页码
       this.pageInfo.currentPage = currentPage
       //访问服务器数据
-      this.queryAllLink()
+      this.queryContestPage()
     }
   }
 }

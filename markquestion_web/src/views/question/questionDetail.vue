@@ -163,7 +163,7 @@
                     {{ '浏览量:' + question.watch }}
                 </div>
                 <div class="text item">
-                    {{ '来源:' + question.platform }}
+                    {{ '来源:' + question.questionFrom }}
                 </div>
                 <div class="text item">
                     {{ '难度:' }}

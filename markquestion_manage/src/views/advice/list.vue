@@ -112,7 +112,7 @@
           <el-input v-model="advice.adviceDescribe" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="详细信息">
-          <el-input v-model="advice.adviceContent" autocomplete="off"></el-input>
+          <el-input type="textarea" v-model="advice.adviceContent" placeholder="支持markdown语法"></el-input>
         </el-form-item>
         <el-form-item label="上传图片" >
           <el-upload
